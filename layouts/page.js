@@ -19,6 +19,9 @@ export default ({ title, children }) => {
           font-size: 16px;
           color: #444;
         }
+        img {
+          max-width: 100%;
+        }
       `}
       </style>
       { children }
