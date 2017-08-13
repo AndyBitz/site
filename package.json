@@ -1,0 +1,12 @@
+{
+  "name": "site",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "next start",
+    "build": "next build",
+    "dev": "next"
+  },
+  "repository": "AndyBitz/site",
+  "author": "AndyBitz",
+  "license": "MIT"
+}
