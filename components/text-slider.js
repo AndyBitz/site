@@ -21,12 +21,14 @@ const SliderItem = ({data, isActive}) => (
     {`
       position: absolute;
       font-size: 1.5em;
+      opacity: 0;
 
       .active {
-        background-color: green;
+        animation: fade-in 300ms forwards;
       }
 
       .active + li {
+        opacity: 1;
         animation: fade-out 300ms forwards;
       }
 
@@ -38,6 +40,16 @@ const SliderItem = ({data, isActive}) => (
         to {
           transform: translateY(2em);
           opacity: 0;
+        }
+      }
+      @keyframes fade-in {
+        from {
+          transform: translateY(-2em);
+          opacity: 0
+        }
+        to {
+          transform: translateY(0);
+          opacity: 1;
         }
       }
     `}
