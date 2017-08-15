@@ -11,60 +11,71 @@ export default class extends Component {
   }
 }
 
-const SliderItem = ({data, isActive}) => (
-  <li className={isActive ? 'active' : ''}>
-    {data}
-    <style jsx>
-    {`
-      li {
-        position: absolute;
-        font-size: 1.5em;
-        opacity: 0;
-      }
+const SliderItem = ({ data, isActive, isPrev }) => {
+  let className = isActive
+    ? 'active'
+    : isPrev
+    ? 'prev'
+    : ''
 
-      .active {
-        animation: fade-in 300ms forwards;
-      }
-
-      .active + li {
-        opacity: 1;
-        animation: fade-out 300ms forwards;
-      }
-
-      @keyframes fade-out {
-        from {
-          transform: translateY(0);
-          opacity: 1;
-        }
-        to {
-          transform: translateY(2em);
+  return (
+    <li className={className}>
+      { data }
+      <style jsx>
+      {`
+        li {
+          position: absolute;
+          font-size: 1.5em;
           opacity: 0;
         }
-      }
-      @keyframes fade-in {
-        from {
-          transform: translateY(-2em);
-          opacity: 0
-        }
-        to {
-          transform: translateY(0);
-          opacity: 1;
-        }
-      }
-    `}
-    </style>
-  </li>
-)
 
-const Slider = ({data, active}) => (
+        .active {
+          animation: fade-in 175ms forwards;
+        }
+
+        .prev {
+          opacity: 1;
+          animation: fade-out 175ms forwards;
+        }
+
+        @keyframes fade-out {
+          from {
+            transform: translateY(0);
+            opacity: 1;
+          }
+          to {
+            transform: translateY(2em);
+            opacity: 0;
+          }
+        }
+        @keyframes fade-in {
+          from {
+            transform: translateY(-2em);
+            opacity: 0
+          }
+          to {
+            transform: translateY(0);
+            opacity: 1;
+          }
+        }
+      `}
+      </style>
+    </li>
+  )
+}
+
+const Slider = ({ data, active }) => (
   <ul>
     {data.map((item, i) => {
-      const isActive = (active == i)
+      const isActive = active === i
+      const isPrev = active-1 === i || active === 0 && i === data.length-1
+
       return (
         <SliderItem
           key={i}
           data={item}
           isActive={isActive}
+          isPrev={isPrev}
         />
       )
     })}

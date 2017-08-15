@@ -14,6 +14,11 @@ export const ProfileImage = ({ onClick }) => (
       img {
         border-radius: 100%;
         box-shadow: 1px 6px 10px rgba(0,0,0,.1);
+        cursor: pointer;
+        transition: box-shadow 200ms ease-out;
+      }
+      img:active {
+        box-shadow: 1px 15px 10px rgba(0,0,0,.1);
       }
     `}
     </style>
