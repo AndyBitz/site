@@ -41,7 +41,7 @@ export default class extends Component {
   }
 
   state = {
-    active: 0
+    active: 4
   }
 
   data = textData

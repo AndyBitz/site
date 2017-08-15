@@ -1,194 +1,236 @@
+const Line = ({ children, style }) => {
+  let customStyle = {
+    fontFamily: 'Merriweather',
+    ...style
+  }
+
+  return (
+    <span style={customStyle}>
+      { children }
+      <style jsx>
+      {`
+        :global(span) {
+          display: inline-block;
+        }
+      `}
+      </style>
+    </span>
+  )
+}
+
+const T = ({ x=0, y=0, r=0, c, s=1, style, children }) => {
+  let customStyle = {
+    transform: `translate(${x}px, ${y}px) rotate(${r}deg)`,
+    fontSize: `${s}em`,
+    color: c,
+    ...style
+  }
+
+  return (
+    <span style={customStyle}>
+      { children }
+    </span>
+  )
+}
+
 export default [
   
   // Alas, nothing happend.
-  <span>
-    Alas, nothing happend.
-  </span>,
+  <Line>
+    <T x="12" y="-12" s="1.2">Alas,</T>
+    <T x="-12" y="10">nothing happend.</T>
+  </Line>,
 
   // HK, do you know what love is?
-  <span>
-    HK, do you know what love is?
-  </span>,
+  <Line>
+    <T x="12" y="-12">HK,</T>
+    <T x="-12" y="10" s=".8">do you know what <b>love</b> is?</T>
+  </Line>,
 
   // Tuturuuuu, Okarin
-  <span>
-    Tuturuuuu, Okarin
-  </span>,
+  <Line>
+    <T s=".8">Tuturuuuu,</T>
+    <T y="18">Okarin</T>
+  </Line>,
 
   // Cheeki Breeki
-  <span>Cheeki Breeki</span>,
+  <Line>Cheeki Breeki</Line>,
 
   // STAIRS???!! noOOOOOOOooooooOOoooOoooo!!!!
-  <span>STAIRS???!! noOOOOOOOooooooOOoooOoooo!!!!</span>,
+  <Line>
+    <T x="100">STAIRS???!!</T>
+    <br />
+    <T x="12" s=".7">noOOOOOOOooooooOOoooOoooo!!!!</T>
+  </Line>,
 
   // If anyone tries to capture me, I'll incinerate their brain.
-  <span>
+  <Line>
     If anyone tries to capture me, I'll incinerate their brain.
-  </span>,
+  </Line>,
 
   // Git Gud
-  <span>
+  <Line>
     Git Gud
-  </span>,
+  </Line>,
 
   // YOU DIED
-  <span>
+  <Line>
     YOU DIED
-  </span>,
+  </Line>,
 
   // hello ^•^/
-  <span>
+  <Line>
     hello ^•^/
-  </span>,
+  </Line>,
 
   // <3
-  <span>
+  <Line>
     &lt;3
-  </span>,
+  </Line>,
 
   // 今日は
-  <span>
+  <Line>
     今日は
-  </span>,
+  </Line>,
 
   // F12
-  <span>
+  <Line>
     F12
-  </span>,
+  </Line>,
 
   // >del /S /Q C:\\windows\\system32\\
-  <span>
+  <Line>
     &gt;del /S /Q C:\\windows\\system32\\
-  </span>,
+  </Line>,
 
   // Outdated, destroy society.
-  <span>
+  <Line>
     Outdated, destroy society.
-  </span>,
+  </Line>,
 
   // We are not retreating, we are advancing in reverse.
-  <span>
+  <Line>
     We are not retreating, we are advancing in reverse.
-  </span>,
+  </Line>,
 
   // Wololo
-  <span>
+  <Line>
     Wololo
-  </span>,
+  </Line>,
 
   // durararararararara
-  <span>
+  <Line>
     durararararararara
-  </span>,
+  </Line>,
 
   // 0xdeadbeef
-  <span>
+  <Line>
     0xdeadbeef
-  </span>,
+  </Line>,
 
   // >git commit suicide - Thats how you delete a repo.
-  <span>
+  <Line>
     >git commit suicide Thats how you delete a repo.
-  </span>,
+  </Line>,
 
   // ニャアアアアアアアアアアアア
-  <span>
+  <Line>
     ニャアアアアアアアアアアアア
-  </span>,
+  </Line>,
 
   // KOTOR > The Movies - my opinion
-  <span>
+  <Line>
     KOTOR > The Movies - my opinion
-  </span>,
+  </Line>,
 
   // I wonder if I plant you in the ground, if you will grow taller?
-  <span>
+  <Line>
     I wonder if I plant you in the ground, if you will grow taller?
-  </span>,
+  </Line>,
 
   // Здравствуйте! // Zdravstvuyte!
-  <span>
+  <Line>
     Здравствуйте!
-  </span>,
+  </Line>,
 
   // Slytherin or Ravenclaw - please, no Hufflepuff
-  <span>
+  <Line>
     Slytherin or Ravenclaw - please, no Hufflepuff
-  </span>,
+  </Line>,
 
   // IZZZZAAAAAAYYYYYY&#8203;AAAAAAAAAAAA!!!!
-  <span>
+  <Line>
     IZZZZAAAAAAYYYYYYAAAAAAAAAAAA!!!!
-  </span>,
+  </Line>,
 
   // Clown Prince of Crime
-  <span>
+  <Line>
     Clown Prince of Crime
-  </span>,
+  </Line>,
 
   // RULES OF NATURE
-  <span>
+  <Line>
     RULES OF NATURE
-  </span>,
+  </Line>,
 
   // METAL GEAR?!
-  <span>  
+  <Line>  
     METAL GEAR?!
-  </span>,
+  </Line>,
 
   // Chimichangas!
-  <span>
+  <Line>
     Chimichangas!
-  </span>,
+  </Line>,
 
   // We did it reddit.
-  <span>
+  <Line>
     We did it reddit.
-  </span>,
+  </Line>,
 
   // This is not meth.
-  <span>
+  <Line>
     This is not meth.
-  </span>,
+  </Line>,
 
   // Hi. What do you play? - Wow, um. Zelda, Tetris... - ... That's kind of a big question.
-  <span>
+  <Line>
     Hi. What do you play? - Wow, um. Zelda, Tetris... - ... That's kind of a big question.
-  </span>,
+  </Line>,
 
   // segmentation fault
-  <span>
+  <Line>
     segmentation fault
-  </span>,
+  </Line>,
 
   // xor rax, rax
-  <span>
+  <Line>
     xor rax, rax
-  </span>,
+  </Line>,
 
   // Flowers, Butterflies and Dragons.
-  <span>
+  <Line>
     Flowers, Butterflies and Dragons.
-  </span>,
+  </Line>,
 
   // carry me senpai
-  <span>
+  <Line>
     carry me senpai
-  </span>,
+  </Line>,
 
   // *nodebleed*
-  <span>*nosebleed*</span>,
+  <Line>*nosebleed*</Line>,
 
   // shizuo chan ^•^ 
-  <span>
+  <Line>
     shizuo chan ^•^
-  </span>,
+  </Line>,
 
   // 最高に, 最高に, 最高に君達が大好きだ
-  <span>
+  <Line>
     最高に, 最高に, 最高に君達が大好きだ
-  </span>,
+  </Line>,
 
   // Click the picture.
-  <span>Click the picture.</span>
+  <Line>Click the picture.</Line>
 ]
