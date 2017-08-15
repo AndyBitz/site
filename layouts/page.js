@@ -19,6 +19,7 @@ export default ({ title, children }) => {
           font-family: sans-serif;
           font-size: 16px;
           color: #444;
+          overflow: hidden;
         }
         img {
           max-width: 100%;
