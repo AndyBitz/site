@@ -22,6 +22,13 @@ export const ProfileImage = ({ onClick }) => (
       img:active {
         box-shadow: 1px 15px 10px rgba(0,0,0,.1);
       }
+
+      @media (min-width: 800px) {
+        .profile-image {
+          margin-top: 4em;
+          max-width: 14em;
+        }
+      }
     `}
     </style>
   </div>
@@ -48,7 +55,7 @@ export default class extends Component {
   }
 
   createInterval() {
-    this.interval = setInterval
+
   }
 
   componentDidMount() {

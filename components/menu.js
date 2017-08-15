@@ -2,13 +2,19 @@ import Link from 'next/link'
 
 export default () => (
   <nav>
-    <Link href="https://github.com/AndyBitz"><a>Code</a></Link>
-    <Link href="https://twitter.com/andybitz_"><a>Bird</a></Link>
-    <Link href="#"><a>Art</a></Link>
-    <Link href="#"><a>Mail</a></Link>
+    <div>
+      <Link href="https://github.com/AndyBitz"><a>Code</a></Link>
+      <Link href="https://twitter.com/andybitz_"><a>Bird</a></Link>
+      <Link href="#"><a>Art</a></Link>
+      <Link href="#"><a>Mail</a></Link>
+    </div>
     <style jsx>
     {`
       nav {
+        max-width: 800px;
+        margin: auto;
+      }
+      nav div {
         position: absolute; 
         bottom: 1em;
       }
