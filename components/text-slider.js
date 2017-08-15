@@ -1,15 +1,12 @@
 import { Component } from 'react'
 
 export default class extends Component {
-  state = {
-    active: 0
-  }
-
-  data = ["text-1", "text-2", "text-3"]
-
   render() {
     return (
-      <Slider data={this.data} active={this.state.active} />
+      <Slider
+        data={this.props.data}
+        active={this.props.active}
+      />
     )
   }
 }
@@ -19,9 +16,11 @@ const SliderItem = ({data, isActive}) => (
     {data}
     <style jsx>
     {`
-      position: absolute;
-      font-size: 1.5em;
-      opacity: 0;
+      li {
+        position: absolute;
+        font-size: 1.5em;
+        opacity: 0;
+      }
 
       .active {
         animation: fade-in 300ms forwards;
