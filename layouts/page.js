@@ -7,6 +7,7 @@ export default ({ title, children }) => {
     <main>
       <Head>
         <title>{ title }</title>
+        <link href="https://fonts.googleapis.com/css?family=Merriweather:400,400i,700,700i|Roboto+Mono" rel="stylesheet" />
       </Head>
       <style jsx global>
       {`

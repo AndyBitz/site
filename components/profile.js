@@ -1,6 +1,8 @@
 import { Component } from 'react'
 import TextSlider from './text-slider'
 
+import textData from './texts'
+
 export const ProfileImage = ({ onClick }) => (
   <div className="profile-image" onClick={onClick}>
     <img src="/static/profile.png" />
@@ -8,7 +10,7 @@ export const ProfileImage = ({ onClick }) => (
     {`
       .profile-image {
         margin: auto;
-        margin-top: 1em;
+        margin-top: 2em;
         max-width: 10em;
       }
       img {
@@ -35,7 +37,7 @@ export default class extends Component {
     active: 0
   }
 
-  data = ["text-1", "text-2", "text-3"]
+  data = textData
 
   nextSlider() {
     let next = this.state.active+1
@@ -43,6 +45,14 @@ export default class extends Component {
       next = 0
 
     this.setState({ active: next })
+  }
+
+  createInterval() {
+    this.interval = setInterval
+  }
+
+  componentDidMount() {
+
   }
 
   render() {
