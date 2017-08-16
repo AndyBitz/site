@@ -31,7 +31,7 @@ export default class extends Component {
 
 const _content = [
   { icon: CodeSvg, text: 'Code', url: 'https://github.com/AndyBitz' },
-  { icon: ArtsSvg, text: 'Arts', url: '#' },
+  { icon: ArtsSvg, text: 'Arts', url: 'https://dribbble.com/andybitz' },
   { icon: FuckSvg, text: 'Bird', url: 'https://twitter.com/andybitz_' },
   { icon: MailSvg, text: 'Mail', url: 'mailto:artzbitz@gmail.com' }
 ]
