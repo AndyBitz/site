@@ -125,6 +125,7 @@ const MenuItem = ({ y, url, children }) => {
             cursor: pointer;
             text-decoration: none;
             color: black;
+            font-family: Roboto, sans-serif;
             transition:
               margin 200ms ease-out;
           }
