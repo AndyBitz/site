@@ -8,6 +8,11 @@ export default ({ title, children }) => {
       <Head>
         <title>{ title }</title>
         <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" />
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=0" />
+        <meta name="description" content="Programming, Design, Art and all the other things I love." />
+        <meta name="keywords" content="programming, design, art" />
+        <meta name="robots" content="index, follow" />
       </Head>
       <style jsx>
       {`
