@@ -14,5 +14,16 @@
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
     "react-motion": "^0.5.0"
+  },
+  "devDependencies": {
+    "babel-plugin-inline-react-svg": "^0.4.0"
+  },
+  "babel": {
+    "presets": [
+      "next/babel"
+    ],
+    "plugins": [
+      "inline-react-svg"
+    ]
   }
 }

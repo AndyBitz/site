@@ -4,12 +4,16 @@ import { Motion, spring, presets } from 'react-motion'
 import Page from '../layouts/page'
 import Delay from '../components/delay'
 
+import CodeSvg from '../components/code.svg'
+import FuckSvg from '../components/twitter.svg'
+import MailSvg from '../components/mail.svg'
+import ArtsSvg from '../components/art.svg'
 
 export default class extends Component {
   state = { hasMounted: false }
 
   componentDidMount() {
-    this.timeOut = setTimeout(() => this.setState({ hasMounted: true }), 200)
+    this.timeOut = setTimeout(() => this.setState({ hasMounted: true }), 1000)
   }
 
   componentWillUnmount() {
@@ -19,18 +23,24 @@ export default class extends Component {
   render() {
     return ( 
       <Page>
-        { this.state.hasMounted ? <Content /> : '' }
+        { this.state.hasMounted ? <Content /> : <PreContent /> }
       </Page>
     )
   }
 }
 
 const _content = [
-  { icon: 0, text: 'Code', url: 'https://github.com/AndyBitz' },
-  { icon: 1, text: 'Arts', url: '#' },
-  { icon: 2, text: 'Bird', url: 'https://twitter.com/andybitz_' },
-  { icon: 3, text: 'Mail', url: 'mailto:artzbitz@gmail.com' }
+  { icon: CodeSvg, text: 'Code', url: 'https://github.com/AndyBitz' },
+  { icon: ArtsSvg, text: 'Arts', url: '#' },
+  { icon: FuckSvg, text: 'Bird', url: 'https://twitter.com/andybitz_' },
+  { icon: MailSvg, text: 'Mail', url: 'mailto:artzbitz@gmail.com' }
 ]
+
+const PreContent = () => (
+  <Wrapper>
+    <Circle />
+  </Wrapper>
+)
 
 const Content = () => (
   <Wrapper>
@@ -43,30 +53,34 @@ const mapContent = (item, index) => (
   <Motion
     key={index}
     defaultStyle={{
-      y: 0
+      y: 0,
+      width: 0,
+      opacity: 0
     }}
     style={{
-      y: spring(index*2.5, presets.wobbly)
+      y: spring(index*2.5, presets.wobbly),
+      width: spring(5, presets.wobbly),
+      opacity: spring(1)
     }}
   >
     { styles => (
         <MenuItem url={item.url} y={styles.y}>
-          <Circle>{ item.icon }</Circle>
-          <Delay initial={0} value={5} period={220+(index*220)}>
-          { val => (
-            <Motion
-              defaultStyle={{width: 0}}
-              style={{width: spring(val)}}
-            >
-              { styles => <Text width={styles.width}>{ item.text }</Text> }
-            </Motion>
-          ) }
+          <Delay initial={0} value={styles.opacity} period={100+(index*100)}>
+            { val => <Circle>{ <item.icon style={{ opacity: val, ...iconStyle }} /> }</Circle> }
+          </Delay>
+          <Delay initial={0} value={styles.width} period={300+(index*220)}>
+            { val => <Text width={val}>{ item.text }</Text> }
           </Delay>
         </MenuItem>
       )
     }
   </Motion>
 )
+
+const iconStyle = {
+  fill: '#333',
+  padding: '.4em'
+}
 
 const MenuItem = ({ y, url, children }) => {
   const customStyle = {
@@ -76,18 +90,18 @@ const MenuItem = ({ y, url, children }) => {
   return (
     <Link href={url}>
       <a style={customStyle}>
-      { children }
-      <style jsx>
-      {`
-        a {
-          position: absolute;
-          display: flex;
-          height: 2em;
-          cursor: pointer;
-          text-decoration: none;
-        }
-      `}
-      </style>
+        { children }
+        <style jsx>
+        {`
+          a {
+            position: absolute;
+            display: flex;
+            height: 2em;
+            cursor: pointer;
+            text-decoration: none;
+          }
+        `}
+        </style>
       </a>
     </Link>
   )
@@ -110,11 +124,12 @@ const Wrapper = ({ children }) => (
   </section>
 )
 
-const Circle = ({ children, scale=1, size=2, rotate=0, y=0, style={} }) => {
+const Circle = ({ children, opacity=1, scale=1, size=2, rotate=0, y=0, style={} }) => {
   const customStyle = {
     transform: `translateY(${y}em) scale(${scale}) rotate(${rotate}deg)`,
     height: `${size}em`,
     width: `${size}em`,
+    opacity: opacity,
     ...style
   }
 
