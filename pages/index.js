@@ -84,7 +84,7 @@ const mapContent = (item, index) => (
       opacity: 0
     }}
     style={{
-      y: spring(index*2.5, presets.wobbly),
+      y: spring(index*2.75, presets.wobbly),
       width: spring(5, presets.wobbly),
       opacity: spring(1)
     }}
@@ -122,9 +122,20 @@ const MenuItem = ({ y, url, children }) => {
           a {
             position: absolute;
             display: flex;
-            height: 2em;
             cursor: pointer;
             text-decoration: none;
+            color: black;
+            transition:
+              margin 200ms ease-out;
+          }
+          a:hover {
+            margin-left: 1em;
+          }
+          a:hover :global(div) {
+            background-color: #000;
+          }
+          a:hover :global(svg) {
+            fill: #fff!important;
           }
         `}
         </style>
@@ -198,6 +209,8 @@ const Text = ({ children, width }) => {
           overflow: hidden;
           white-space: nowrap;
           height: 2em;
+          border-bottom: 1px solid transparent;
+          border-top: 1px solid transparent;
         }
       `}
       </style>
