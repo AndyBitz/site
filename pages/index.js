@@ -1,50 +1,97 @@
 import { Component } from 'react'
+import Link from 'next/link'
 import { Motion, spring, presets } from 'react-motion'
 import Page from '../layouts/page'
 import Delay from '../components/delay'
 
 
 export default class extends Component {
+  state = { hasMounted: false }
+
+  componentDidMount() {
+    this.timeOut = setTimeout(() => this.setState({ hasMounted: true }), 200)
+  }
+
+  componentWillUnmount() {
+    clearTimeout(this.timeOut)
+  }
+
   render() {
     return ( 
       <Page>
-        <Content />
+        { this.state.hasMounted ? <Content /> : '' }
       </Page>
     )
   }
 }
 
 const _content = [
-  { icon: 0, text: 'Code' },
-  { icon: 1, text: 'Art' },
-  { icon: 2, text: 'Bird' },
-  { icon: 3, text: 'Mail' }
+  { icon: 0, text: 'Code', url: 'https://github.com/AndyBitz' },
+  { icon: 1, text: 'Arts', url: '#' },
+  { icon: 2, text: 'Bird', url: 'https://twitter.com/andybitz_' },
+  { icon: 3, text: 'Mail', url: 'mailto:artzbitz@gmail.com' }
 ]
 
 const Content = () => (
   <Wrapper>
-    <Motion defaultStyle={{y: 0, size: 2}} style={{y: spring(-10), size: spring(8, presets.wobbly)}}>
-      {interpolatingStyle => <Circle
-          y={interpolatingStyle.y}
-          size={interpolatingStyle.size}
-          children={<Profile />}
-        />
-      }
-    </Motion>
-
-    { _content.map((item, index) => (
-      <Motion key={index} defaultStyle={{y: 0}} style={{y: spring(index*2.5, presets.wobbly)}}>
-        {interpolatingStyle => <MenuItem
-            y={interpolatingStyle.y}
-            icon={item.icon}
-            index={index}
-            children={item.text}
-          />
-        }
-      </Motion>
-    )) }
+    <Profile />
+    { _content.map(mapContent) }
   </Wrapper>
 )
+
+const mapContent = (item, index) => (
+  <Motion
+    key={index}
+    defaultStyle={{
+      y: 0
+    }}
+    style={{
+      y: spring(index*2.5, presets.wobbly)
+    }}
+  >
+    { styles => (
+        <MenuItem url={item.url} y={styles.y}>
+          <Circle>{ item.icon }</Circle>
+          <Delay initial={0} value={5} period={220+(index*220)}>
+          { val => (
+            <Motion
+              defaultStyle={{width: 0}}
+              style={{width: spring(val)}}
+            >
+              { styles => <Text width={styles.width}>{ item.text }</Text> }
+            </Motion>
+          ) }
+          </Delay>
+        </MenuItem>
+      )
+    }
+  </Motion>
+)
+
+const MenuItem = ({ y, url, children }) => {
+  const customStyle = {
+    transform: `translateY(${y}em)`
+  }
+
+  return (
+    <Link href={url}>
+      <a style={customStyle}>
+      { children }
+      <style jsx>
+      {`
+        a {
+          position: absolute;
+          display: flex;
+          height: 2em;
+          cursor: pointer;
+          text-decoration: none;
+        }
+      `}
+      </style>
+      </a>
+    </Link>
+  )
+}
 
 const Wrapper = ({ children }) => (
   <section>
@@ -63,9 +110,9 @@ const Wrapper = ({ children }) => (
   </section>
 )
 
-const Circle = ({ children, y=0, size=2, style={} }) => {
+const Circle = ({ children, scale=1, size=2, rotate=0, y=0, style={} }) => {
   const customStyle = {
-    transform: `translateY(${y}em)`,
+    transform: `translateY(${y}em) scale(${scale}) rotate(${rotate}deg)`,
     height: `${size}em`,
     width: `${size}em`,
     ...style
@@ -78,69 +125,18 @@ const Circle = ({ children, y=0, size=2, style={} }) => {
       {`
         div {
           border-radius: 100%;
-          background-color: #000;
+          border: 1px solid black;
           width: 2em;
           height: 2em;
           display: inline-flex;
           justify-content: center;
           align-items: center;
-          color: snow;
           overflow: hidden;
+          background-color: white;
         }
       `}
       </style>
     </div>
-  )
-}
-
-const MenuItem = ({ y=0, icon, children, index, style }) => {
-  const customStyle = {
-    transform: `translateY(${y}em)`,
-    ...style
-  }
-
-  return (
-    <a style={customStyle}>
-      <Circle>{ icon }</Circle>
-      <ItemText index={index}>{ children }</ItemText>
-      <style jsx>
-      {`
-        a {
-          position: absolute;
-          display: flex;
-          height: 2em;
-          cursor: pointer;
-        }
-      `}
-      </style>
-    </a>
-  )
-}
-
-const ItemText = ({ children, style, index }) => {
-  const customStyle = {
-    display: 'inline-block',
-    whiteSpace: 'nowrap',
-    height: '2em',
-    overflow: 'hidden',
-    display: 'flex',
-    alignItems: 'center',
-    ...style
-  }
-
-  return (
-    <Delay initial={0} value={5} period={220+(index*220)}>
-      { delay => (
-          <Motion defaultStyle={{width: 0}} style={{width: spring(delay, presets.wobbly)}}>
-            {interpolatingStyle => <Text
-                width={interpolatingStyle.width}
-                children={children}
-              />
-            }
-          </Motion>
-        )
-      }
-    </Delay>
   )
 }
 
@@ -169,7 +165,12 @@ const Text = ({ children, width }) => {
 }
 
 const Profile = () => (
-  <div>
-    <img src="/static/profile.png" />
-  </div>
+  <Motion defaultStyle={{y: 0, size: 2}} style={{y: spring(-10), size: spring(8, presets.wobbly)}}>
+    {interpolatingStyle => <Circle
+        y={interpolatingStyle.y}
+        size={interpolatingStyle.size}
+        children={<div><img src="/static/profile.png" /></div>}
+      />
+    }
+  </Motion>
 )
