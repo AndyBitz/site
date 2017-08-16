@@ -13,7 +13,7 @@ export default class extends Component {
   state = { hasMounted: false }
 
   componentDidMount() {
-    this.timeOut = setTimeout(() => this.setState({ hasMounted: true }), 1000)
+    this.timeOut = setTimeout(() => this.setState({ hasMounted: true }), 2750)
   }
 
   componentWillUnmount() {
@@ -38,8 +38,34 @@ const _content = [
 
 const PreContent = () => (
   <Wrapper>
-    <Circle />
+    <Spinner />
   </Wrapper>
+)
+
+const Spinner = () => (
+  <svg fill="#000000" height="24" viewBox="0 0 30 30" width="24" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="15" cy="15" r="12" stroke="black" fill="none" />
+    <style jsx>
+    {`
+      circle {
+        stroke-dasharray: 18 18;
+        stroke-dashoffset: 0;
+        stroke-width: 1px;
+        animation:
+          rotate 520ms 3 linear,
+          finish 1000ms 1560ms forwards;
+      }
+      @keyframes rotate {
+        from { stroke-dashoffset: 0; }
+        to { stroke-dashoffset: 36; }
+      }
+      @keyframes finish {
+        from { stroke-dasharray: 18 18; }
+        to { stroke-dasharray: 0; }
+      }
+    `}
+    </style>
+  </svg>
 )
 
 const Content = () => (
