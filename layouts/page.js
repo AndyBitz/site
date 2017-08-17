@@ -10,7 +10,9 @@ export default ({ title, children }) => {
         <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" />
         <meta charset="utf-8" />
 
+
         <link rel="shortcut icon" href="/static/favicon.png" />
+        <meta name="theme-color" content="#ffffff" />
 
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=0" />
         <meta name="description" content="Programming, Design, Art and all the other things I love." />

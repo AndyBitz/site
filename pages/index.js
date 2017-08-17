@@ -224,8 +224,21 @@ const Profile = () => (
     {interpolatingStyle => <Circle
         y={interpolatingStyle.y}
         size={interpolatingStyle.size}
-        children={<div><img src="/static/profile.png" /></div>}
+        children={<ProfileImage />}
       />
     }
   </Motion>
+)
+
+const ProfileImage = () => (
+  <div>
+    <img src="/static/profile.png" />
+    <style jsx>
+    {`
+      img {
+        transform: scale(1.03);
+      }
+    `}
+    </style>
+  </div>
 )
