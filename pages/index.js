@@ -23,7 +23,7 @@ export default class extends Component {
   render() {
     return ( 
       <Page>
-        { this.state.hasMounted ? <Content /> : <PreContent /> }
+      { this.state.hasMounted ? <Content /> : <PreContent /> }
       </Page>
     )
   }
@@ -79,12 +79,12 @@ const mapContent = (item, index) => (
   <Motion
     key={index}
     defaultStyle={{
-      y: 0,
+      y: -index*2.15, // unholy hack to reverse transform
       width: 0,
       opacity: 0
     }}
     style={{
-      y: spring(index*2.75, presets.wobbly),
+      y: spring(index*1, presets.wobbly),
       width: spring(5, presets.wobbly),
       opacity: spring(1)
     }}
@@ -92,7 +92,9 @@ const mapContent = (item, index) => (
     { styles => (
         <MenuItem url={item.url} y={styles.y}>
           <Delay initial={0} value={styles.opacity} period={100+(index*100)}>
-            { val => <Circle>{ <item.icon style={{ opacity: val, ...iconStyle }} /> }</Circle> }
+            { val => <Circle style={{display: 'absolute'}}>
+                { <item.icon style={{ opacity: val, ...iconStyle }} /> }
+              </Circle> }
           </Delay>
           <Delay initial={0} value={styles.width} period={300+(index*220)}>
             { val => <Text width={val}>{ item.text }</Text> }
@@ -120,7 +122,6 @@ const MenuItem = ({ y, url, children }) => {
         <style jsx>
         {`
           a {
-            position: absolute;
             display: flex;
             cursor: pointer;
             text-decoration: none;
@@ -154,6 +155,7 @@ const Wrapper = ({ children }) => (
         display: flex;
         justify-content: center;
         align-items: center;
+        flex-direction: column;
         height: 100vh;
         position: relative;
       }
@@ -181,7 +183,7 @@ const Circle = ({ children, opacity=1, scale=1, size=2, rotate=0, y=0, style={} 
           border: 1px solid black;
           width: 2em;
           height: 2em;
-          display: inline-flex;
+          display: flex;
           justify-content: center;
           align-items: center;
           overflow: hidden;
@@ -205,7 +207,7 @@ const Text = ({ children, width }) => {
       <style jsx>
       {`
         span {
-          display: flex;
+          display: inline-flex;
           align-items: center;
           overflow: hidden;
           white-space: nowrap;
@@ -220,7 +222,7 @@ const Text = ({ children, width }) => {
 }
 
 const Profile = () => (
-  <Motion defaultStyle={{y: 0, size: 2}} style={{y: spring(-10), size: spring(8, presets.wobbly)}}>
+  <Motion defaultStyle={{y: 2, size: 2}} style={{y: spring(-3), size: spring(9, presets.wobbly)}}>
     {interpolatingStyle => <Circle
         y={interpolatingStyle.y}
         size={interpolatingStyle.size}
