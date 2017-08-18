@@ -1,7 +1,9 @@
 import Head from 'next/head'
 
+const url = "https://andybitz.io"
+const description = "Programming, Design, Art and all the other things I love."
 
-export default ({ title="hello ^•^/", image="/static/og.png" }) => (
+export default ({ title="hello ^•^/", image="https://andybitz.io/static/og.png" }) => (
   <Head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
@@ -14,16 +16,24 @@ export default ({ title="hello ^•^/", image="/static/og.png" }) => (
     <link rel="preload" href="/static/profile.png" as="image" crossorigin />
 
     <meta name="viewport" content="width=device-width,initial-scale=1.0" />
-    <meta name="description" content="Programming, Design, Art and all the other things I love." />
     <meta name="robots" content="index, follow" />
 
-    <meta property="og:title" content={title} />
+    <meta name="description" content={description} />
+
     <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://andybitz.io" />
+    <meta property="og:title" content={title} />
+    <meta property="og:url" content={url} />
     <meta property="og:image" content={image} />
 
-    <meta name="twitter:url" content="https://andybitz.io" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:site" content="@andybitz_" />
+    
     <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={image} />
+
+    <meta name="twitter:creator" content="@andybitz_" />
+    <meta name="twitter:url" content={url} />
 
     <title>{ title }</title>
   </Head>
