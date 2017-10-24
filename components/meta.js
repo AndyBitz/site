@@ -5,15 +5,16 @@ const description = "Programming, Design, Art and all the other things I love."
 
 export default ({ title="hello ^•^/", image="https://andybitz.io/static/og.png" }) => (
   <Head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta httpEquiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta httpEquiv="X-UA-Compatible" content="IE=Edge" />
 
     <link rel="shortcut icon" href="/static/favicon.png" />
     <meta name="theme-color" content="#ffffff" />
 
     <link rel="home" href="/" />
 
-    <link rel="preload" href="/static/profile.png" as="image" crossorigin />
+    { /* Don't preload, due to client-site rendering */ }
+    { /* <link rel="preload" href="/static/profile.png" as="image" crossOrigin="true" /> */ }
 
     <meta name="viewport" content="width=device-width,initial-scale=1.0" />
     <meta name="robots" content="index, follow" />
