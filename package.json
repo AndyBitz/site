@@ -2,7 +2,8 @@
   "name": "site",
   "version": "1.0.0",
   "scripts": {
-    "build": "next build && next export && rm -Rf ./site && mv ./out ./site",
+    "start": "next start",
+    "build": "next build",
     "dev": "next"
   },
   "repository": "AndyBitz/site",
