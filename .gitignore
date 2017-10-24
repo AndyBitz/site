@@ -1,5 +1,7 @@
 # build
 .next
+out
+site
 
 # dependencies
 node_modules
