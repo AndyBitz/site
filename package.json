@@ -3,17 +3,17 @@
   "version": "1.0.0",
   "scripts": {
     "start": "next start",
-    "build": "next build",
+    "build": "rm -Rf out && next build && next export && mv out site",
     "dev": "next"
   },
   "repository": "AndyBitz/site",
   "author": "AndyBitz",
   "license": "MIT",
   "dependencies": {
-    "next": "^4.1.3",
-    "react": "^16.0.0",
-    "react-dom": "^16.0.0",
-    "react-motion": "^0.5.0"
+    "next": "^4.2.1",
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0",
+    "react-motion": "^0.5.2"
   },
   "devDependencies": {
     "babel-plugin-inline-react-svg": "^0.4.0"

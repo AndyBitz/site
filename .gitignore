@@ -2,6 +2,7 @@
 .next
 out
 site
+dist
 
 # dependencies
 node_modules

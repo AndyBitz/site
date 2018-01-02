@@ -13,8 +13,6 @@ export default ({ title="hello ^•^/", image="https://andybitz.io/static/og.png
 
     <link rel="home" href="/" />
 
-    <link rel="preload" href="/static/profile.png" as="image" crossOrigin="true" />
-
     <meta name="viewport" content="width=device-width,initial-scale=1.0" />
     <meta name="robots" content="index, follow" />
 
