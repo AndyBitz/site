@@ -4,10 +4,10 @@ import { Motion, spring, presets } from 'react-motion'
 import Page from '../layouts/page'
 import Delay from '../components/delay'
 
-import CodeSvg from '../components/code.svg'
-import FuckSvg from '../components/twitter.svg'
-import MailSvg from '../components/mail.svg'
-import ArtsSvg from '../components/art.svg'
+import CodeSvg from '../vectors/code'
+import FuckSvg from '../vectors/twitter'
+import MailSvg from '../vectors/mail'
+import ArtsSvg from '../vectors/art'
 
 export default class extends Component {
   state = { hasMounted: false }
