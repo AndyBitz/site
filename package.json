@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "scripts": {
     "start": "next start",
-    "build": "rm -Rf out && next build && next export && mv out site",
+    "export": "next build && next export",
     "dev": "next"
   },
   "repository": "AndyBitz/site",
