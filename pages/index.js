@@ -1,8 +1,8 @@
-import { Component } from 'react'
 import Link from 'next/link'
-import { Motion, spring, presets } from 'react-motion'
-import Page from '../layouts/page'
+import { Component } from 'react'
 import Delay from '../components/delay'
+import Layout from '../components/layout'
+import { Motion, spring, presets } from 'react-motion'
 
 import CodeSvg from '../vectors/code'
 import FuckSvg from '../vectors/twitter'
@@ -22,9 +22,9 @@ export default class extends Component {
 
   render() {
     return ( 
-      <Page>
+      <Layout>
       { this.state.hasMounted ? <Content /> : <PreContent /> }
-      </Page>
+      </Layout>
     )
   }
 }
