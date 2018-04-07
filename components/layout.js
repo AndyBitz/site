@@ -36,28 +36,49 @@ export default ({ title, children }) => {
       <style jsx>
       {`
         main {
+          display: grid;
           overflow: hidden;
-          width: 100vw;
-          min-height: 100vh;
+          grid-template-rows: auto;
+          grid-template-columns: 1fr;
         }
       `}
       </style>
+
       <style jsx global>
       {`
         html, body {
           margin: 0;
           padding: 0;
-          min-height: 100%;
+          max-width: 600px;
+          margin-left: auto;
+          margin-right: auto;
         }
 
         body {
           color: #444;
           font-size: 16px;
-          font-family: sans-serif;
+          font-family: 'Roboto', sans-serif;
         }
 
         img {
           max-width: 100%;
+        }
+
+        ::-moz-selection {
+          color: white;
+          background-color: black;
+        }
+
+        ::selection {
+          color: white;
+          background-color: black;
+        }
+
+
+        @media (min-width: 768px) {
+          body {
+            font-size: 18px;
+          }
         }
       `}
       </style>
