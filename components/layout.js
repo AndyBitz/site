@@ -41,6 +41,12 @@ export default ({ title, children }) => {
           grid-template-rows: auto;
           grid-template-columns: 1fr;
         }
+
+        @media (min-height: 800px) {
+          main {
+            margin-top: 15vh;
+          }
+        }
       `}
       </style>
 
