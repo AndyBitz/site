@@ -5,6 +5,7 @@ import ListItem from './list-item'
 import Arts from '../../vectors/art'
 import Code from '../../vectors/code'
 import Mail from '../../vectors/mail'
+import Blog from '../../vectors/book'
 import Twitter from '../../vectors/twitter'
 
 
@@ -32,6 +33,12 @@ export default () => (
         />
         <ListItem
           delay={4}
+          title="Blog"
+          icon={<Blog />}
+          href="https://medium.com/@AndyBitz"
+        />
+        <ListItem
+          delay={5}
           title="Mail"
           icon={<Mail />}
           href="mailto:artzbitz@gmail.com"
