@@ -1,9 +1,6 @@
 {
   "alias": "andybitz.io",
   "type": "static",
-  "features": {
-    "static": "v2"
-  },
   "static": {
     "public": "out",
     "directoryListing": false
