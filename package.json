@@ -2,16 +2,16 @@
   "name": "site",
   "version": "1.0.0",
   "scripts": {
-    "build": "next build && next export && cp robots.txt out && cp sitemap.xml out",
-    "dev": "next"
+    "dev": "next",
+    "build": "next build",
+    "start": "next start"
   },
   "repository": "AndyBitz/site",
   "author": "AndyBitz",
   "license": "MIT",
   "dependencies": {
-    "next": "^6.1.1",
-    "react": "^16.4.2",
-    "react-dom": "^16.4.2"
-  },
-  "devDependencies": {}
+    "next": "8.0.3",
+    "react": "16.4.2",
+    "react-dom": "16.4.2"
+  }
 }

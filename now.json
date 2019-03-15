@@ -1,11 +1,12 @@
 {
+  "version": 2,
   "alias": "andybitz.io",
-  "type": "static",
-  "static": {
-    "public": "out",
-    "directoryListing": false
-  },
-  "files": [
-    "out"
+  "builds": [
+    { "src": "./public/*", "use": "@now/static" },
+    { "src": "./next.config.js", "use": "@now/next" }
+  ],
+  "routes": [
+    { "src": "/robots.txt", "dest": "/public/robots.txt" },
+    { "src": "/sitemap.xml", "dest": "public/sitemap.xml" }
   ]
 }
