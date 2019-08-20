@@ -1,6 +1,7 @@
 {
   "name": "site",
   "version": "1.0.0",
+  "private": true,
   "scripts": {
     "dev": "next",
     "build": "next build",
@@ -10,8 +11,8 @@
   "author": "AndyBitz",
   "license": "MIT",
   "dependencies": {
-    "next": "8.0.3",
-    "react": "16.4.2",
-    "react-dom": "16.4.2"
+    "next": "9.0.4",
+    "react": "16.9.0",
+    "react-dom": "16.9.0"
   }
 }
