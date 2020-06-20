@@ -1,6 +1,6 @@
 export default () => (
   <div>
-    <img src="/static/profile.png" alt="" />   
+    <img src="/profile.png" alt="" />   
   
     <style jsx>
     {`

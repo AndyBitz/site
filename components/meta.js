@@ -3,12 +3,12 @@ import Head from 'next/head'
 const url = "https://andybitz.io"
 const description = "Programming, Design, Art and all the other things I love."
 
-export default ({ title="hello ^•^/", image="https://andybitz.io/static/og.png" }) => (
+export default ({ title="hello ^•^/", image="https://andybitz.io/og.png" }) => (
   <Head>
     <meta httpEquiv="Content-Type" content="text/html; charset=utf-8" />
     <meta httpEquiv="X-UA-Compatible" content="IE=Edge" />
 
-    <link rel="shortcut icon" href="/static/favicon.png" />
+    <link rel="shortcut icon" href="/favicon.png" />
     <meta name="theme-color" content="#ffffff" />
 
     <link rel="home" href="/" />
