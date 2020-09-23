@@ -1,6 +1,6 @@
 # [andybitz.io](https://andybitz.io/)
 
-### Hosted on [Now](https://zeit.co/now)
+### Hosted on [Vercel](https://vercel.com/)
 
 #### How to deploy
 
