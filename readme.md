@@ -4,4 +4,4 @@
 
 #### How to deploy
 
-Push to `master` to create a deployment.
+Push to `master` to create a deployment
