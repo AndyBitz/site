@@ -1,46 +1,45 @@
 .profile {
-		margin: 1rem;
-		margin-top: 20%;
-		max-width: 25rem;
-		min-height: 15rem;
+	margin: 1rem;
+	margin-top: 20%;
+	max-width: 25rem;
+	min-height: 15rem;
 }
 
-
 .picture {
-		opacity: 0;
-		width: 8rem;
-		height: 8rem;
-		overflow: hidden;
-		border-radius: 100%;
-		transform: scale(.2);
-		background-color: #333;
-		animation: picture .5s 1s forwards ease-in-out;
-	}
+	opacity: 0;
+	width: 8rem;
+	height: 8rem;
+	overflow: hidden;
+	border-radius: 100%;
+	transform: scale(0.2);
+	background-color: #333;
+	animation: picture 0.5s 1s forwards ease-in-out;
+}
 
 @keyframes picture {
 	0% {
 		opacity: 0;
-		transform: scale(.2);
+		transform: scale(0.2);
 	}
 	10% {
 		opacity: 1;
-		transform: scale(.2);
+		transform: scale(0.2);
 	}
 	20% {
 		opacity: 0;
-		transform: scale(.2);
+		transform: scale(0.2);
 	}
 	30% {
 		opacity: 1;
-		transform: scale(.2);
+		transform: scale(0.2);
 	}
 	40% {
 		opacity: 0;
-		transform: scale(.2);
+		transform: scale(0.2);
 	}
 	50% {
 		opacity: 1;
-		transform: scale(.2);
+		transform: scale(0.2);
 	}
 	100% {
 		opacity: 1;
@@ -48,45 +47,44 @@
 	}
 }
 
-
 .picture img {
-		opacity: 0;
-		transform: translate(2rem, 3rem);
-		animation: image 200ms 1.6s forwards ease-in-out;
+	opacity: 0;
+	transform: translate(2rem, 3rem);
+	animation: image 200ms 1.6s forwards ease-in-out;
 }
 
 @keyframes image {
-		0% {
-			opacity: 0;
-			transform: translate(2rem, 3rem);
-		}
-		10% {
-			opacity: 1;
-			transform: translate(2rem, 3rem);
-		}
-		20% {
-			opacity: 0;
-			transform: translate(0, 0);
-		}
-		30% {
-			opacity: 1;
-		}
-		40% {
-			opacity: 0;
-		}
-		50% {
-			opacity: 1;
-		}
-		60% {
-			opacity: 0;
-		}
-		70% {
-			opacity: 1;
-		}
-		100% {
-			opacity: 1;
-			transform: translate(0, 0);
-		}
+	0% {
+		opacity: 0;
+		transform: translate(2rem, 3rem);
+	}
+	10% {
+		opacity: 1;
+		transform: translate(2rem, 3rem);
+	}
+	20% {
+		opacity: 0;
+		transform: translate(0, 0);
+	}
+	30% {
+		opacity: 1;
+	}
+	40% {
+		opacity: 0;
+	}
+	50% {
+		opacity: 1;
+	}
+	60% {
+		opacity: 0;
+	}
+	70% {
+		opacity: 1;
+	}
+	100% {
+		opacity: 1;
+		transform: translate(0, 0);
+	}
 }
 
 .title h1 {
@@ -97,14 +95,12 @@
 	position: relative;
 }
 
-
 .title span {
 	opacity: 0;
 	display: block;
 	transform: translateY(100%);
 
-	animation:
-		title 200ms 360ms forwards ease-in-out;
+	animation: title 200ms 360ms forwards ease-in-out;
 }
 
 @keyframes title {
@@ -118,19 +114,17 @@
 	}
 }
 
-
 .title h1::after {
 	right: 0;
 	top: 100%;
 	left: 100%;
-	content: '';
+	content: "";
 	height: 1px;
 	display: block;
 	position: absolute;
 	background-color: #333;
 
-	animation:
-		line 260ms 100ms forwards ease-in-out;
+	animation: line 260ms 100ms forwards ease-in-out;
 }
 
 @keyframes line {
@@ -145,15 +139,14 @@
 .title h1::before {
 	right: 0;
 	left: 100%;
-	content: '';
-	height: .75rem;
+	content: "";
+	height: 0.75rem;
 	display: block;
-	bottom: -.25rem;
+	bottom: -0.25rem;
 	position: absolute;
-	background-color: rgba(255,0,0,.3);
+	background-color: rgba(255, 0, 0, 0.3);
 
-	animation:
-		red-line 260ms 560ms forwards ease-in-out;
+	animation: red-line 260ms 560ms forwards ease-in-out;
 }
 
 @keyframes red-line {

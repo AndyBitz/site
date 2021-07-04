@@ -1,8 +1,8 @@
-import { IconArt } from '../../vectors/art'
-import { IconBook } from '../../vectors/book'
-import { IconCode } from '../../vectors/code'
-import { IconMail } from '../../vectors/mail'
-import { IconTwitter } from '../../vectors/twitter'
+import { IconArt } from '../../vectors/art';
+import { IconBook } from '../../vectors/book';
+import { IconCode } from '../../vectors/code';
+import { IconMail } from '../../vectors/mail';
+import { IconTwitter } from '../../vectors/twitter';
 import { ReactNode } from 'react';
 import styles from './list.module.css';
 
@@ -47,7 +47,12 @@ export function List() {
 	);
 }
 
-function ListItem({ icon, title, href, delay }: {
+function ListItem({
+	icon,
+	title,
+	href,
+	delay,
+}: {
 	icon: ReactNode;
 	title: string;
 	href: string;
@@ -56,10 +61,16 @@ function ListItem({ icon, title, href, delay }: {
 	return (
 		<li className={styles.listItem}>
 			<a href={href} target="_blank">
-				<span style={{ animationDelay: `${delay * 200 + 1800}ms` }} className={styles.icon}>
+				<span
+					style={{ animationDelay: `${delay * 200 + 1800}ms` }}
+					className={styles.icon}
+				>
 					{icon}
 				</span>
-				<span style={{ animationDelay: `${delay * 250 + 1800}ms` }} className={styles.title}>
+				<span
+					style={{ animationDelay: `${delay * 250 + 1800}ms` }}
+					className={styles.title}
+				>
 					{title}
 				</span>
 			</a>

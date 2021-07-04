@@ -14,7 +14,7 @@ function Picture() {
 		<div className={styles.picture}>
 			<img src="/profile.png" alt="" />
 		</div>
-	)
+	);
 }
 
 function Title() {

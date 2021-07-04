@@ -3,7 +3,10 @@ import { ReactNode } from 'react';
 import Head from 'next/head';
 import styles from './layout.module.css';
 
-export function Layout({ title, children }: {
+export function Layout({
+	title,
+	children,
+}: {
 	title?: string;
 	children: ReactNode;
 }) {
