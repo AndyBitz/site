@@ -1,9 +1,7 @@
-import Head from 'next/head';
-
 const url = 'https://andybitz.io';
 const description = 'Programming, Design, Art and all the other things I love.';
 
-export function Meta({
+export default function Head({
 	title = 'hello ^•^/',
 	image = 'https://andybitz.io/og.png',
 }: {
@@ -11,7 +9,7 @@ export function Meta({
 	image?: string;
 }) {
 	return (
-		<Head>
+		<>
 			<meta httpEquiv="Content-Type" content="text/html; charset=utf-8" />
 			<meta httpEquiv="X-UA-Compatible" content="IE=Edge" />
 
@@ -44,6 +42,11 @@ export function Meta({
 			<meta name="twitter:url" content={url} />
 
 			<title>{title}</title>
-		</Head>
+
+			<link
+				href="https://fonts.googleapis.com/css?family=Roboto"
+				rel="stylesheet"
+			/>
+		</>
 	);
 }

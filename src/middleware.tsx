@@ -1,6 +1,6 @@
-import type { NextFetchEvent, NextRequest } from 'next/server';
+import { NextFetchEvent, NextRequest, NextResponse } from 'next/server';
 
-export function middleware(req: NextRequest, ev: NextFetchEvent) {
+export function middleware(req: NextRequest, _ev: NextFetchEvent) {
 	const userAgent = req.headers.get('user-agent');
 
 	const country = req.headers.get('x-vercel-ip-country');
@@ -14,5 +14,9 @@ export function middleware(req: NextRequest, ev: NextFetchEvent) {
 		`User-Agent: ${userAgent}\n\n`
 	);
 
-	return;
+	return NextResponse.next();
 }
+
+export const config = {
+	matcher: '/(.*)',
+};
