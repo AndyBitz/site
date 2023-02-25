@@ -1,11 +1,15 @@
-.main {
+main {
+	max-width: 600px;
+	margin-left: auto;
+	margin-right: auto;
 	display: grid;
 	overflow: hidden;
 	grid-template-rows: auto;
 	grid-template-columns: 1fr;
 }
+
 @media (min-height: 800px) {
-	.main {
+	main {
 		margin-top: 15vh;
 	}
 }
