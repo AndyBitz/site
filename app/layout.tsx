@@ -18,7 +18,7 @@ export const metadata: Metadata = {
 		index: true,
 		follow: true,
 	},
-	themeColor: '#ffffff',
+	themeColor: '#000000',
 	openGraph: {
 		type: 'website',
 		url,

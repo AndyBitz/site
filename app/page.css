@@ -10,6 +10,6 @@ main {
 
 @media (min-height: 800px) {
 	main {
-		margin-top: 15vh;
+		padding-top: 15vh;
 	}
 }
