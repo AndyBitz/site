@@ -1,9 +1,9 @@
-import { IconArt } from '../../vectors/art';
-import { IconBook } from '../../vectors/book';
-import { IconCode } from '../../vectors/code';
-import { IconMail } from '../../vectors/mail';
-import { IconTwitter } from '../../vectors/twitter';
-import { ReactNode } from 'react';
+import { IconArt } from './vectors/art';
+import { IconBook } from './vectors/book';
+import { IconCode } from './vectors/code';
+import { IconMail } from './vectors/mail';
+import { IconTwitter } from './vectors/twitter';
+import type { ReactNode } from 'react';
 import styles from './list.module.css';
 
 export function List() {

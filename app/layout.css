@@ -2,9 +2,6 @@ html,
 body {
 	margin: 0;
 	padding: 0;
-	max-width: 600px;
-	margin-left: auto;
-	margin-right: auto;
 }
 
 body {
@@ -25,10 +22,4 @@ img {
 ::selection {
 	color: white;
 	background-color: black;
-}
-
-@media (min-width: 768px) {
-	body {
-		font-size: 18px;
-	}
 }
