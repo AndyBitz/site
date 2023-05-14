@@ -1,5 +1,5 @@
-import { List } from './list';
-import { Profile } from './profile';
+import { List } from './components/list';
+import { Profile } from './components/profile';
 import './page.css';
 
 export default function Page() {
