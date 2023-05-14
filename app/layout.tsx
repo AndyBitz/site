@@ -7,7 +7,7 @@ import './layout.css';
 const title = 'hello ^•^/';
 const url = 'https://andybitz.io';
 const image = `${url}/og.png`;
-const description = 'Programming, Design, Art and all the other things I love.';
+const description = 'Programming, Design, Art, and all the other things I love.';
 
 export const metadata: Metadata = {
 	title,
