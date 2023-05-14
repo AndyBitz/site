@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react';
+import { Analytics } from '@vercel/analytics/react';
 import type { Metadata } from 'next';
 import { Roboto } from 'next/font/google';
 import './layout.css';
@@ -48,6 +49,7 @@ export default function RootLayout({
 		<html lang="en">
 			<body className={roboto.className}>
 				{children}
+				<Analytics />
 			</body>
 		</html>
 	);
