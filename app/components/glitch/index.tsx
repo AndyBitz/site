@@ -2,6 +2,28 @@
 
 import { useEffect, useRef } from 'react';
 import styles from './glitch.module.css';
+import { Perlin } from './perlin';
+
+function getCanvasRatio(ctx: CanvasRenderingContext2D) {
+	// Ensure the canvas renders in the correct resolution
+	const devicePixelRatio = window.devicePixelRatio || 1;
+	// @ts-ignore
+	const backingStorePixelRatio: number = ctx.webkitBackingStorePixelRatio
+		// @ts-ignore
+		|| ctx.mozBackingStorePixelRatio
+		// @ts-ignore
+		|| ctx.msBackingStorePixelRatio
+		// @ts-ignore
+		|| ctx.oBackingStorePixelRatio
+		// @ts-ignore
+		|| ctx.backingStorePixelRatio
+		|| 1;
+
+	return {
+		devicePixelRatio,
+		backingStorePixelRatio,
+	};
+}
 
 export function Glitch({ children }: { children: string }) {
 	const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -17,19 +39,7 @@ export function Glitch({ children }: { children: string }) {
 		const span = spanRef.current;
 		if (!span) return;
 
-		// Ensure the canvas renders in the correct resolution
-		const devicePixelRatio = window.devicePixelRatio || 1;
-		// @ts-ignore
-		const backingStorePixelRatio: number = ctx.webkitBackingStorePixelRatio
-			// @ts-ignore
-			|| ctx.mozBackingStorePixelRatio
-			// @ts-ignore
-			|| ctx.msBackingStorePixelRatio
-			// @ts-ignore
-			|| ctx.oBackingStorePixelRatio
-			// @ts-ignore
-			|| ctx.backingStorePixelRatio
-			|| 1;
+		const { devicePixelRatio, backingStorePixelRatio } = getCanvasRatio(ctx);
 
 		const style = window.getComputedStyle(span);
 		const rect = span.getBoundingClientRect();
@@ -113,6 +123,9 @@ function createAnimation(ctx: CanvasRenderingContext2D) {
 	let start = 0;
 
 	const original = ctx.getImageData(0, 0, ctx.canvas.width, ctx.canvas.height);
+	const perlin = new Perlin(1337);
+
+	const { devicePixelRatio } = getCanvasRatio(ctx);
 
 	const canvas = ctx.canvas;
 	const transform = ctx.getTransform();
@@ -122,6 +135,9 @@ function createAnimation(ctx: CanvasRenderingContext2D) {
 	const canvasBlue = document.createElement('canvas');
 	canvasRed.width = canvasGreen.width = canvasBlue.width = canvas.width;
 	canvasRed.height = canvasGreen.height = canvasBlue.height = canvas.height;
+
+	canvasRed.style.width = canvasGreen.style.width = canvasBlue.style.width = canvas.style.width;
+	canvasRed.style.height = canvasGreen.style.height = canvasBlue.style.height = canvas.style.height;
 
 	const ctxRed = canvasRed.getContext('2d');
 	const ctxGreen = canvasGreen.getContext('2d');
@@ -133,46 +149,64 @@ function createAnimation(ctx: CanvasRenderingContext2D) {
 	ctxGreen.setTransform(transform);
 	ctxBlue.setTransform(transform);
 
+	let lastChromaticAberration = 0;
+	let chromaticAberrationCounter = 0;
+
+	const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+	let data = imageData.data;
+
+	let redData = ctx.createImageData(canvas.width, canvas.height);
+	let greenData = ctx.createImageData(canvas.width, canvas.height);
+	let blueData = ctx.createImageData(canvas.width, canvas.height);
+
+	// Split the color channels
+	for (let i = 0; i < data.length; i += 4) {
+		redData.data[i] = 255 || data[i];  // Red channel
+		greenData.data[i + 1] = 255 || data[i + 1];  // Green channel
+		blueData.data[i + 2] = 255 || data[i + 2];  // Blue channel
+		redData.data[i + 3] = greenData.data[i + 3] = blueData.data[i + 3] = data[i + 3];
+	}
+
+	let chromaticState: 'chromatic' | 'clear' = 'chromatic';
+	let chromaticChange = 300;
+
 	const animate = (time: number) => {
 		if (stopped) return;
 		if (start === 0) start = time;
 
-		// const elapsed = time - start;
+		const elapsed = time - start;
 
-		// if (elapsed > 10000) {
-		// 	ctx.putImageData(original, 0, 0);
-		// 	return;
-		// }
+		if (time - lastChromaticAberration > chromaticChange) {
+			lastChromaticAberration = time;
 
-		const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-		let data = imageData.data;
+			if (chromaticState === 'chromatic') {
+				lastChromaticAberration = time;
 
-		let redData = ctx.createImageData(canvas.width, canvas.height);
-		let greenData = ctx.createImageData(canvas.width, canvas.height);
-		let blueData = ctx.createImageData(canvas.width, canvas.height);
+  				ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-		// Split the color channels
-		for (let i = 0; i < data.length; i += 4) {
-			redData.data[i] = 255 || data[i];  // Red channel
-			greenData.data[i + 1] = 255 || data[i + 1];  // Green channel
-			blueData.data[i + 2] = 255 || data[i + 2];  // Blue channel
-			redData.data[i + 3] = greenData.data[i + 3] = blueData.data[i + 3] = data[i + 3];
-  		}
+				ctxRed.putImageData(redData, 0, 0);
+				ctxGreen.putImageData(greenData, 0, 0);
+				ctxBlue.putImageData(blueData, 0, 0);
 
-  		// Clear the original canvas
-  		ctx.clearRect(0, 0, canvas.width, canvas.height);
+  				ctx.globalCompositeOperation = 'lighter';
 
-		ctxRed.putImageData(redData, 0, 0);
-		ctxGreen.putImageData(greenData, 0, 0);
-		ctxBlue.putImageData(blueData, 0, 0);
+				const invert = Math.random() > .5 ? -1 : 1;
+				const x = (2 * invert) + perlin.noise(2 / 100, elapsed) * 10;
+				const y = (-2 * invert) + perlin.noise(-2 / 100, elapsed) * 10;
 
-  		// Draw each color channel back onto the canvas, shifted slightly
-  		ctx.globalCompositeOperation = 'lighter';  // Use 'lighter' composite operation to combine layers
-  		// ctx.drawImage(canvasRed, -12, 0);  // shift red left
-  		// ctx.drawImage(canvasGreen, 0, 0);  // don't shift green
-  		ctx.drawImage(canvasBlue, 12, 0);  // shift blue right
+  				ctx.drawImage(canvasRed, x, y, canvas.width / devicePixelRatio, canvas.height / devicePixelRatio);
+  				ctx.drawImage(canvasGreen, 0, 0, canvas.width / devicePixelRatio, canvas.height / devicePixelRatio);
+  				ctx.drawImage(canvasBlue, -x, -y, canvas.width / devicePixelRatio, canvas.height / devicePixelRatio);
+			} else if (chromaticState === 'clear') {
+  				ctx.clearRect(0, 0, canvas.width, canvas.height);
+				ctx.putImageData(original, 0, 0);
+			}
 
-		// requestAnimationFrame(animate);
+			chromaticState = Math.random() > .5 ? 'chromatic' : 'clear';
+			chromaticChange = Math.floor(Math.random() * 400);
+		}
+
+		requestAnimationFrame(animate);
 	};
 
 	return {
