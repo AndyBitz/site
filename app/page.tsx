@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import styles from './page.module.css';
 import { Link } from './components/link';
+import { Glitch } from './components/glitch';
 import { IconArt } from './icons/art';
 import { IconBook } from './icons/book';
 import { IconCode } from './icons/code';
@@ -25,7 +26,7 @@ function Intro() {
 				<Image src="/profile.png" alt="profile" width={128} height={128} />
 			</div>
 			<div className={styles.introName}>
-				<h1>Andy</h1>
+				<h1><Glitch>Andy</Glitch></h1>
 				<span className={styles.introLineBlack} />
 				<span className={styles.introLineRed} />
 			</div>
