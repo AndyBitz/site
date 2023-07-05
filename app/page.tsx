@@ -132,7 +132,9 @@ function ListItem({
 					style={{ animationDelay: `${delay * 250 + 1600}ms` }}
 					className={styles.listTitle}
 				>
-					{title}
+					<Glitch>
+						{title}
+					</Glitch>
 				</span>
 			</Link>
 		</li>
