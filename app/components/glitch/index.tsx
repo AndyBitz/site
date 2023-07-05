@@ -149,8 +149,6 @@ function createAnimation(ctx: CanvasRenderingContext2D) {
 	ctxGreen.setTransform(transform);
 	ctxBlue.setTransform(transform);
 
-	let lastChromaticAberration = 0;
-	let chromaticAberrationCounter = 0;
 
 	const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
 	let data = imageData.data;
@@ -167,8 +165,13 @@ function createAnimation(ctx: CanvasRenderingContext2D) {
 		redData.data[i + 3] = greenData.data[i + 3] = blueData.data[i + 3] = data[i + 3];
 	}
 
+	let lastChromaticAberration = 0;
 	let chromaticState: 'chromatic' | 'clear' = 'chromatic';
 	let chromaticChange = 300;
+
+	let lastDisplacement = 0;
+	let displacementState: 'displacement' | 'clear' = 'displacement';
+	let displacementChange = 200;
 
 	const animate = (time: number) => {
 		if (stopped) return;
@@ -176,6 +179,7 @@ function createAnimation(ctx: CanvasRenderingContext2D) {
 
 		const elapsed = time - start;
 
+		// Chromatic aberration
 		if (time - lastChromaticAberration > chromaticChange) {
 			lastChromaticAberration = time;
 
@@ -190,20 +194,63 @@ function createAnimation(ctx: CanvasRenderingContext2D) {
 
   				ctx.globalCompositeOperation = 'lighter';
 
-				const invert = Math.random() > .5 ? -1 : 1;
+				const invert = perlin.noise(1 / 100, elapsed) > 0 ? -1 : 1;
 				const x = (2 * invert) + perlin.noise(2 / 100, elapsed) * 10;
 				const y = (-2 * invert) + perlin.noise(-2 / 100, elapsed) * 10;
 
   				ctx.drawImage(canvasRed, x, y, canvas.width / devicePixelRatio, canvas.height / devicePixelRatio);
   				ctx.drawImage(canvasGreen, 0, 0, canvas.width / devicePixelRatio, canvas.height / devicePixelRatio);
   				ctx.drawImage(canvasBlue, -x, -y, canvas.width / devicePixelRatio, canvas.height / devicePixelRatio);
+
+				chromaticState = Math.random() > .5 ? 'chromatic' : 'clear';
+				chromaticChange = Math.floor(Math.random() * 200);
 			} else if (chromaticState === 'clear') {
   				ctx.clearRect(0, 0, canvas.width, canvas.height);
 				ctx.putImageData(original, 0, 0);
-			}
 
-			chromaticState = Math.random() > .5 ? 'chromatic' : 'clear';
-			chromaticChange = Math.floor(Math.random() * 400);
+				chromaticState = Math.random() > .8 ? 'chromatic' : 'clear';
+				chromaticChange = Math.floor(Math.random() * 1000);
+			}
+		}
+
+		// Displacement
+		if (time - lastDisplacement > displacementChange) {
+			lastDisplacement = time;
+
+			if (displacementState === 'displacement') {
+				const normalize = (value: number) => (value + 1) / 2;
+
+				const maxBoxWidth = 30;
+				const maxBoxHeight = 30;
+
+				for (let i = 0; i < Math.floor((Math.random() + 1) * 16); i++) {
+					const x = Math.floor(elapsed % canvas.width);
+					const y = Math.floor(elapsed % canvas.height);
+
+					const cutout = {
+						x: x + perlin.noise(x / 100, y / 100) * 10,
+						y: y + perlin.noise(y / 100, x / 100) * 10,
+						width: normalize(perlin.noise(y / 100, x / 100)) * maxBoxWidth,
+						height: normalize(perlin.noise(x / 100, y / 100)) * maxBoxHeight,
+					};
+
+					const target = {
+						x: Math.floor(cutout.x + perlin.noise((cutout.x + 50) / 100, (cutout.y + 50) / 100) * 10),
+						y: Math.floor(cutout.y + perlin.noise((cutout.y + 50) / 100, (cutout.x + 50) / 100) * 10),
+					};
+
+					const imageData = ctx.getImageData(cutout.x, cutout.y, cutout.width, cutout.height);
+					ctx.clearRect(cutout.x, cutout.y, cutout.width, cutout.height);
+					ctx.putImageData(imageData, target.x, target.y);
+				}
+
+				// For now, we just let the chromatic abberation clear the state
+				// displacementState = Math.random() > .5 ? 'displacement' : 'clear';
+				// displacementChange = Math.floor(Math.random() * 300);
+			} else if (displacementState === 'clear') {
+				ctx.clearRect(0, 0, canvas.width, canvas.height);
+				ctx.putImageData(original, 0, 0);
+			}
 		}
 
 		requestAnimationFrame(animate);
