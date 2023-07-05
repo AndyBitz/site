@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from 'react';
+import { ReactNode, useEffect, useMemo, useRef } from 'react';
 import styles from './glitch.module.css';
 import { Perlin } from './perlin';
 
@@ -25,92 +25,88 @@ function getCanvasRatio(ctx: CanvasRenderingContext2D) {
 	};
 }
 
-export function Glitch({ children }: { children: string }) {
+export function Glitch({ children }: { children: string | ReactNode }) {
 	const canvasRef = useRef<HTMLCanvasElement | null>(null);
 	const spanRef = useRef<HTMLSpanElement | null>(null);
 
 	useEffect(() => {
-		const canvas = canvasRef.current;
-		if (!canvas) return;
+		const callbacks: (() => unknown)[] = [];
 
-		const ctx = canvas.getContext('2d');
-		if (!ctx) return;
+		const timeout = setTimeout(() => {
+			const canvas = canvasRef.current;
+			if (!canvas) return;
 
-		const span = spanRef.current;
-		if (!span) return;
+			const ctx = canvas.getContext('2d');
+			if (!ctx) return;
 
-		const { devicePixelRatio, backingStorePixelRatio } = getCanvasRatio(ctx);
+			const span = spanRef.current;
+			if (!span) return;
 
-		const style = window.getComputedStyle(span);
-		const rect = span.getBoundingClientRect();
+			const { devicePixelRatio, backingStorePixelRatio } = getCanvasRatio(ctx);
 
-		const pixelRatio = devicePixelRatio / backingStorePixelRatio;
-		const w = rect.width;
-		const h = rect.height;
+			const style = window.getComputedStyle(span);
+			const rect = span.getBoundingClientRect();
 
-		// Make the canvas larger than the original container
-		// to ensure we can show effects that are out of bounds.
-		const oversize = 24;
+			const pixelRatio = devicePixelRatio / backingStorePixelRatio;
+			const w = rect.width;
+			const h = rect.height;
 
-		canvas.width = (w + oversize) * pixelRatio;
-		canvas.height = (h + oversize) * pixelRatio;
-		canvas.style.width = (w + oversize) + "px";
-		canvas.style.height = (h + oversize) + "px";
-		canvas.style.transform = `translate(-${oversize / 2}px, -${oversize / 2}px)`;
-		ctx.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
+			// Make the canvas larger than the original container
+			// to ensure we can show effects that are out of bounds.
+			const oversize = 24;
 
-		// Set the default text
-		ctx.clearRect(0, 0, canvas.width, canvas.height);
-		ctx.font = style['font'];
-		ctx.fillStyle = '#333';
-		ctx.fillText(children, 0 + oversize / 2, rect.height - 8 + oversize / 2);
+			canvas.width = (w + oversize) * pixelRatio;
+			canvas.height = (h + oversize) * pixelRatio;
+			canvas.style.width = (w + oversize) + "px";
+			canvas.style.height = (h + oversize) + "px";
+			canvas.style.transform = `translate(-${oversize / 2}px, -${oversize / 2}px)`;
+			ctx.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
 
-		// Hide the original text
-		span.style.color = 'rgba(0, 0, 0, 0)';
+			// Set the default text
+			if (typeof children === 'string') {
+				ctx.clearRect(0, 0, canvas.width, canvas.height);
+				ctx.font = style['font'];
+				ctx.fillStyle = '#333';
+				ctx.fillText(children, 0 + oversize / 2, rect.height - 8 + oversize / 2);
 
-		const { start, stop } = createAnimation(ctx);
+				// Hide the original text
+				span.style.color = 'rgba(0, 0, 0, 0)';
+			} else {
+				const child = span.children[0];
+				if (child.tagName === 'IMG') {
+					ctx.drawImage(child as HTMLImageElement, 0 + oversize / 2, 0 + oversize / 2);
+				}
+				span.style.opacity = '0';
+			}
 
-		start();
+			const { start, stop } = createAnimation(ctx);
+
+			start();
+
+			callbacks.push(stop);
+		}, 2000);
 
 		return () => {
-			stop();
+			clearTimeout(timeout);
+			callbacks.forEach(c => c());
 		};
 
-		// Cuts out a specifc path and fills it.
-		/*
-		const cutout = { x: 0, y: 0, width: 30, height: 40 };
-		ctx.save();
-
-		ctx.beginPath();
-		ctx.rect(cutout.x, cutout.y, cutout.width, cutout.height);
-		ctx.closePath();
-
-		ctx.globalCompositeOperation = 'source-atop';
-
-		ctx.fillStyle = 'rgba(255, 0, 0, 1)';
-		ctx.fillRect(cutout.x, cutout.y, cutout.width, cutout.height);
-
-		ctx.restore();
-		*/
-
-		// Cuts out a specifc part and moves it somewhere else.
-		/*
-		const cutout = { x: 0, y: 0, width: 30, height: 40 };
-		const imageData = ctx.getImageData(cutout.x, cutout.y, cutout.width, cutout.height);
-		ctx.clearRect(cutout.x, cutout.y, cutout.width, cutout.height);
-		ctx.putImageData(imageData, 5, 10);
-		*/
 	}, [children]);
 
-	/**
-	 * 1. chromatic aberration
-	 * 2. pixalted
-	 * 3. displacement
-	 */
+	const spanStyles = useMemo(() => {
+		if (typeof children !== 'string') {
+			return {
+				display: 'block',
+				lineHeight: 0,
+			};
+		}
+
+		return {};
+	}, [children]);
 
 	return (
 		<div className={styles.glitch}>
-			<span ref={spanRef}>
+			<span ref={spanRef} style={spanStyles}>
 				{children}
 			</span>
 			<canvas ref={canvasRef} />

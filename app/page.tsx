@@ -23,7 +23,9 @@ function Intro() {
 	return (
 		<div className={styles.intro}>
 			<div className={styles.introImage}>
-				<Image src="/profile.png" alt="profile" width={128} height={128} />
+				<Glitch>
+					<Image src="/profile.png" alt="profile" width={128} height={128} />
+				</Glitch>
 			</div>
 			<div className={styles.introName}>
 				<h1><Glitch>Andy</Glitch></h1>
