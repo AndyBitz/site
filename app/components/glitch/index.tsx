@@ -25,7 +25,13 @@ function getCanvasRatio(ctx: CanvasRenderingContext2D) {
 	};
 }
 
-export function Glitch({ children }: { children: string | ReactNode }) {
+export function Glitch({
+	children,
+	maxBoxWidthAndHeight,
+}: {
+	children: ReactNode,
+	maxBoxWidthAndHeight?: number,
+}) {
 	const canvasRef = useRef<HTMLCanvasElement | null>(null);
 	const spanRef = useRef<HTMLSpanElement | null>(null);
 
@@ -79,7 +85,9 @@ export function Glitch({ children }: { children: string | ReactNode }) {
 				span.style.opacity = '0';
 			}
 
-			const { start, stop } = createAnimation(ctx);
+			const { start, stop } = createAnimation(ctx, {
+				maxBoxWidthAndHeight
+			});
 
 			start();
 
@@ -91,7 +99,10 @@ export function Glitch({ children }: { children: string | ReactNode }) {
 			callbacks.forEach(c => c());
 		};
 
-	}, [children]);
+	}, [
+		children,
+		maxBoxWidthAndHeight,
+	]);
 
 	const spanStyles = useMemo(() => {
 		if (typeof children !== 'string') {
@@ -114,7 +125,9 @@ export function Glitch({ children }: { children: string | ReactNode }) {
 	);
 }
 
-function createAnimation(ctx: CanvasRenderingContext2D) {
+function createAnimation(ctx: CanvasRenderingContext2D, options: {
+	maxBoxWidthAndHeight?: number,
+}) {
 	let stopped = false;
 	let start = 0;
 
@@ -216,8 +229,8 @@ function createAnimation(ctx: CanvasRenderingContext2D) {
 			if (displacementState === 'displacement') {
 				const normalize = (value: number) => (value + 1) / 2;
 
-				const maxBoxWidth = 30;
-				const maxBoxHeight = 30;
+				const maxBoxWidth = options.maxBoxWidthAndHeight ?? 30;
+				const maxBoxHeight = options.maxBoxWidthAndHeight ?? 30;
 
 				for (let i = 0; i < Math.floor((Math.random() + 1) * 16); i++) {
 					const x = Math.floor(elapsed % canvas.width);
