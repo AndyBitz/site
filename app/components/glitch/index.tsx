@@ -183,11 +183,25 @@ function createAnimation(ctx: CanvasRenderingContext2D, options: {
 	let displacementState: 'displacement' | 'clear' = 'displacement';
 	let displacementChange = 200;
 
+	let opSince = 0;
+	let noopFor = 1000;
+	let noopSince = 0;
+	let noopState = true;
+
 	const animate = (time: number) => {
 		if (stopped) return;
 		if (start === 0) start = time;
 
 		const elapsed = time - start;
+
+		if (noopState) {
+			if (time - noopSince > noopFor) {
+				opSince = time;
+				noopState = false;
+			}
+
+			return requestAnimationFrame(animate);
+		}
 
 		// Chromatic aberration
 		if (time - lastChromaticAberration > chromaticChange) {
@@ -261,6 +275,17 @@ function createAnimation(ctx: CanvasRenderingContext2D, options: {
 				ctx.clearRect(0, 0, canvas.width, canvas.height);
 				ctx.putImageData(original, 0, 0);
 			}
+		}
+
+		// Animation must run for at least 3s before
+		// going back into a no-op state.
+		if (time - opSince > 3000 && Math.random() > .2) {
+			noopState = true;
+			noopSince = time;
+			noopFor = Math.floor(Math.random() * 8_000);
+
+			ctx.clearRect(0, 0, canvas.width, canvas.height);
+			ctx.putImageData(original, 0, 0);
 		}
 
 		requestAnimationFrame(animate);
