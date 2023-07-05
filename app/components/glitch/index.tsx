@@ -80,7 +80,8 @@ export function Glitch({
 			} else {
 				const child = span.children[0];
 				if (child.tagName === 'IMG') {
-					ctx.drawImage(child as HTMLImageElement, 0 + oversize / 2, 0 + oversize / 2);
+					ctx.clearRect(0, 0, canvas.width, canvas.height);
+					ctx.drawImage(child as HTMLImageElement, 0 + oversize / 2, 0 + oversize / 2, w, h);
 				}
 				span.style.opacity = '0';
 			}
