@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import styles from './page.module.css';
 import { Link } from './components/link';
+import { Glitch } from './components/glitch';
 import { IconArt } from './icons/art';
 import { IconBook } from './icons/book';
 import { IconCode } from './icons/code';
@@ -22,10 +23,12 @@ function Intro() {
 	return (
 		<div className={styles.intro}>
 			<div className={styles.introImage}>
-				<Image src="/profile.png" alt="profile" width={128} height={128} />
+				<Glitch maxBoxWidthAndHeight={80}>
+					<Image src="/profile.png" alt="profile" width={128} height={128} />
+				</Glitch>
 			</div>
 			<div className={styles.introName}>
-				<h1>Andy</h1>
+				<h1><Glitch>Andy</Glitch></h1>
 				<span className={styles.introLineBlack} />
 				<span className={styles.introLineRed} />
 			</div>
@@ -129,7 +132,9 @@ function ListItem({
 					style={{ animationDelay: `${delay * 250 + 1600}ms` }}
 					className={styles.listTitle}
 				>
-					{title}
+					<Glitch>
+						{title}
+					</Glitch>
 				</span>
 			</Link>
 		</li>
