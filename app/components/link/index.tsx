@@ -1,10 +1,10 @@
-import { useMemo, type HTMLProps } from 'react';
+import { type HTMLProps } from 'react';
 import NextLink from 'next/link';
 import styles from './link.module.css';
 
 export function Link({ children, ...rest }: HTMLProps<HTMLAnchorElement>) {
 	if (!rest.href?.startsWith('http')) {
-		const { href, ...props } = rest;
+		const { href, ref: _ref, ...props } = rest;
 
 		return (
 			<NextLink href={{
