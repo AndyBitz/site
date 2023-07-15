@@ -93,9 +93,10 @@ function List() {
 				/>
 				<ListItem
 					delay={4}
-					title="Blog"
+					title="Thoughts"
 					icon={<IconBook />}
-					href="https://medium.com/@AndyBitz"
+					// href="https://medium.com/@AndyBitz"
+					href="/thoughts"
 				/>
 				<ListItem
 					delay={5}
@@ -121,7 +122,7 @@ function ListItem({
 }) {
 	return (
 		<li className={styles.listItem}>
-			<Link href={href} target="_blank">
+			<Link href={href} target={href.startsWith('http') ? "_blank" : undefined}>
 				<span
 					style={{ animationDelay: `${delay * 200 + 1600}ms` }}
 					className={styles.icon}
