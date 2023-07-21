@@ -3,6 +3,8 @@ import type { Thoughts } from '@ronin/andybitz';
 import { Link } from "../components/link";
 import styles from './page.module.css';
 
+export const revalidate = 60;
+
 export default async function Thoughts() {
 	const [thoughts] = await ronin<Thoughts>(({ get }) => {
 		get.thoughts.orderedBy!.descending = ['postedAt'];
