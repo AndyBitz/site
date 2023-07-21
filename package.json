@@ -13,9 +13,11 @@
     "@vercel/analytics": "1.0.1",
     "next": "13.4.7",
     "react": "18.2.0",
-    "react-dom": "18.2.0"
+    "react-dom": "18.2.0",
+    "ronin": "1.0.41"
   },
   "devDependencies": {
+    "@ronin/andybitz": "0.0.1689186446019",
     "@types/node": "20.3.3",
     "@types/react": "18.2.14",
     "prettier": "2.8.8",

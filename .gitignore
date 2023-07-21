@@ -7,3 +7,5 @@ node_modules
 
 # other
 .vscode
+.env*
+
