@@ -1,7 +1,13 @@
-import ronin from 'ronin';
+import type { Metadata, ResolvingMetadata } from 'next';
 import type { Thought, Thoughts } from '@ronin/andybitz';
+import ronin from 'ronin';
 import { Glitch } from '../../components/glitch';
 import { notFound } from 'next/navigation';
+
+type Props = {
+	params: { slug: string; title: string; };
+	searchParams: { [key: string]: string | string[] | undefined };
+}
 
 export const revalidate = 3600; // Revalidate every hour
 
@@ -10,15 +16,26 @@ export async function generateStaticParams() {
 		get.thoughts.orderedBy!.descending = ['postedAt'];
 	});
 
-	const params: { slug: string; }[] = [];
+	const params: Props['params'][] = [];
 
 	for (const thought of thoughts) {
 		if (thought.slug) {
-			params.push({ slug: thought.slug });
+			params.push({ slug: thought.slug, title: thought.title });
 		}
 	}
 
 	return params;
+}
+
+export async function generateMetadata(
+	{ params, searchParams }: Props,
+	parent?: ResolvingMetadata,
+): Promise<Metadata> {
+	const resolvedParent = await parent;
+
+	return {
+		title: `${params.title} / ${resolvedParent?.title?.absolute}`,
+	};
 }
 
 export default async function Page({ params }: { params: { slug: string; }}) {

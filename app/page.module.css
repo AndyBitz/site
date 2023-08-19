@@ -279,7 +279,7 @@
 	padding-top: 28px;
 	grid-column: span 3;
 	display: flex;
-	justify-content: start;
+	justify-content: flex-start;
 	position: relative;
 }
 
