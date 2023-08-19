@@ -1,7 +1,7 @@
-import { IconArt } from './icons/art';
-import { IconBook } from './icons/book';
 import { IconCode } from './icons/code';
 import { IconMail } from './icons/mail';
+import { IconPencil } from './icons/pencil';
+import { IconThought } from './icons/thought';
 import { IconTwitterX } from './icons/twitter-x';
 
 export const links: {
@@ -12,7 +12,7 @@ export const links: {
 	{
 		title: 'Thoughts',
 		href: '/thoughts',
-		icon: IconBook,
+		icon: IconThought,
 	},
 	{
 		title: 'Code',
@@ -27,7 +27,7 @@ export const links: {
 	{
 		title: 'Art',
 		href: 'https://dribbble.com/andybitz',
-		icon: IconArt,
+		icon: IconPencil,
 	},
 	{
 		title: 'Mail',
