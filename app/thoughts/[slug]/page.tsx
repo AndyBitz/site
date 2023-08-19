@@ -29,9 +29,9 @@ export async function generateStaticParams() {
 
 export async function generateMetadata(
 	{ params }: Props,
-	parent?: ResolvingMetadata,
+	parent: ResolvingMetadata,
 ): Promise<Metadata> {
-	const resolvedParent = await Promise.resolve(parent);
+	const resolvedParent = await parent
 
 	return {
 		title: `${params.title} / ${resolvedParent?.title?.absolute}`,
