@@ -28,10 +28,10 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata(
-	{ params, searchParams }: Props,
+	{ params }: Props,
 	parent?: ResolvingMetadata,
 ): Promise<Metadata> {
-	const resolvedParent = await parent;
+	const resolvedParent = await Promise.resolve(parent);
 
 	return {
 		title: `${params.title} / ${resolvedParent?.title?.absolute}`,
