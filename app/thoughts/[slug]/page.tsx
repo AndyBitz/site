@@ -5,7 +5,7 @@ import { Glitch } from '../../components/glitch';
 import { notFound } from 'next/navigation';
 
 type Props = {
-	params: { slug: string; title: string; };
+	params: { slug: string; };
 	searchParams: { [key: string]: string | string[] | undefined };
 }
 
@@ -20,7 +20,7 @@ export async function generateStaticParams() {
 
 	for (const thought of thoughts) {
 		if (thought.slug) {
-			params.push({ slug: thought.slug, title: thought.title });
+			params.push({ slug: thought.slug });
 		}
 	}
 
@@ -33,8 +33,16 @@ export async function generateMetadata(
 ): Promise<Metadata> {
 	const resolvedParent = await parent
 
+	const [thought] = await ronin<Thought>(({ get }) => {
+		get.thought.with = {
+			slug: params.slug,
+		};
+	});
+
+	if (!thought) notFound();
+
 	return {
-		title: `${params.title} / ${resolvedParent?.title?.absolute}`,
+		title: `${thought.title} / ${resolvedParent?.title?.absolute}`,
 	};
 }
 
