@@ -17,7 +17,7 @@
     "ronin": "1.0.41"
   },
   "devDependencies": {
-    "@ronin/andybitz": "0.0.1689186446019",
+    "@ronin/andybitz": "0.0.1692437895102",
     "@types/node": "20.3.3",
     "@types/react": "18.2.14",
     "prettier": "2.8.8",
