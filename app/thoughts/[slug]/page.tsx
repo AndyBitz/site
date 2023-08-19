@@ -22,7 +22,9 @@ export async function generateStaticParams() {
 
 export default async function Page({ params }: { params: { slug: string; }}) {
 	const [thought] = await ronin<Thought>(({ get }) => {
-		get.thought.with!.slug = params.slug;
+		get.thought.with = {
+			slug: params.slug,
+		};
 	});
 
 	return (
