@@ -14,6 +14,10 @@ export default async function Thoughts() {
 		<div>
 			<ul className={styles.thoughtsList}>
 				{thoughts.map(thought => {
+					if (!thought.postedAt) {
+						return;
+					}
+
 					return (
 						<li>
 							<h3>
