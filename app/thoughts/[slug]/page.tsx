@@ -1,6 +1,7 @@
 import ronin from 'ronin';
 import type { Thought, Thoughts } from '@ronin/andybitz';
 import { Glitch } from '../../components/glitch';
+import { notFound } from 'next/navigation';
 
 export const revalidate = 3600; // Revalidate every hour
 
@@ -26,6 +27,8 @@ export default async function Page({ params }: { params: { slug: string; }}) {
 			slug: params.slug,
 		};
 	});
+
+	if (!thought) notFound();
 
 	return (
 		<>
