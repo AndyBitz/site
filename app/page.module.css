@@ -329,8 +329,9 @@
 
 .icon {
 	opacity: 0;
-	margin-right: 1rem;
+	margin-right: 8px;
 	display: inline-block;
+	transform: translateY(-8px);
 
 	animation: icon 80ms 4 forwards ease-in-out;
 }

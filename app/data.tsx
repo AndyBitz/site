@@ -1,8 +1,10 @@
-import { IconCode } from './icons/code';
-import { IconMail } from './icons/mail';
-import { IconPencil } from './icons/pencil';
-import { IconThought } from './icons/thought';
-import { IconTwitterX } from './icons/twitter-x';
+function Container({ letter }: { letter: string; }) {
+	return (
+		<span style={{ fontSize: 24, lineHeight: 1, width: 24, height: 24, display: 'inline-block' }}>
+			{letter}
+		</span>
+	);
+}
 
 export const links: {
 	title: string;
@@ -12,26 +14,31 @@ export const links: {
 	{
 		title: 'Thoughts',
 		href: '/thoughts',
-		icon: IconThought,
+		// ansuz => odin, inspiration, wisdom
+		icon: () => <Container letter="&#5800;" />
 	},
 	{
 		title: 'Code',
 		href: 'https://github.com/andybitz',
-		icon: IconCode,
+		// fehu => cattle, livestock, wealth
+		icon: () => <Container letter="&#5792;" />
 	},
 	{
 		title: 'T̵w̵i̵t̵t̵e̵r̵ X',
 		href: 'https://twitter.com/andybitz_',
-		icon: IconTwitterX,
+		// kaunan => torch, fire, mallady, death
+		icon: () => <Container letter="&#5810;" />
 	},
 	{
 		title: 'Art',
 		href: 'https://dribbble.com/andybitz',
-		icon: IconPencil,
+		// jēran => year, earth, harvest
+		icon: () => <Container letter="&#5827;" />
 	},
 	{
 		title: 'Mail',
 		href: 'mailto:artzbitz@gmail.com',
-		icon: IconMail,
+		// raidō => horse, ride, journey
+		icon: () => <Container letter="&#5809;" />
 	},
 ];
