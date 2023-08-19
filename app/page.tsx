@@ -1,12 +1,8 @@
 import Image from 'next/image';
+import { links } from './data';
 import styles from './page.module.css';
 import { Link } from './components/link';
 import { Glitch } from './components/glitch';
-import { IconArt } from './icons/art';
-import { IconBook } from './icons/book';
-import { IconCode } from './icons/code';
-import { IconMail } from './icons/mail';
-import { IconTwitter } from './icons/twitter';
 import type { ReactNode } from 'react';
 
 export default function Page() {
@@ -73,37 +69,18 @@ function List() {
 	return (
 		<div className={styles.list}>
 			<ul>
-				<ListItem
-					delay={1}
-					title="Code"
-					icon={<IconCode />}
-					href="https://github.com/andybitz"
-				/>
-				<ListItem
-					delay={2}
-					title="Art"
-					icon={<IconArt />}
-					href="https://dribbble.com/andybitz/"
-				/>
-				<ListItem
-					delay={3}
-					title="Twitter"
-					icon={<IconTwitter />}
-					href="https://twitter.com/andybitz_"
-				/>
-				<ListItem
-					delay={4}
-					title="Thoughts"
-					icon={<IconBook />}
-					// href="https://medium.com/@AndyBitz"
-					href="/thoughts"
-				/>
-				<ListItem
-					delay={5}
-					title="Mail"
-					icon={<IconMail />}
-					href="mailto:artzbitz@gmail.com"
-				/>
+				{links.map((link, index) => {
+					const Icon = link.icon;
+
+					return (
+						<ListItem
+							delay={index + 1}
+							title={link.title}
+							icon={<Icon />}
+							href={link.href}
+						/>
+					);
+				})}
 			</ul>
 		</div>
 	);
