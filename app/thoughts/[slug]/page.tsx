@@ -1,8 +1,9 @@
+import ronin from 'ronin';
+import { notFound } from 'next/navigation';
 import type { Metadata, ResolvingMetadata } from 'next';
 import type { Thought, Thoughts } from '@ronin/andybitz';
-import ronin from 'ronin';
 import { Glitch } from '../../components/glitch';
-import { notFound } from 'next/navigation';
+import { Prosemirror } from '../../components/prosemirror';
 
 type Props = {
 	params: { slug: string; };
@@ -62,9 +63,7 @@ export default async function Page({ params }: { params: { slug: string; }}) {
 					{`/ ${thought.title}`}
 				</Glitch>
 			</h1>
-			<pre style={{ overflow: 'scroll' }}>
-				{JSON.stringify(thought.text, null, 2)}
-			</pre>
+			<Prosemirror data={thought.text as unknown as any} />
 		</>
 	);
 }

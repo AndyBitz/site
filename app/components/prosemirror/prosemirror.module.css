@@ -1,0 +1,12 @@
+.document {
+	font-size: 16px;
+	color: #333;
+	margin-bottom: 64px;
+}
+
+.document blockquote {
+	margin: 0;
+	padding-left: 16px;
+	border-left: 4px solid #333;
+	font-style: italic;
+}
