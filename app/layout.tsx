@@ -10,6 +10,7 @@ const image = `${url}/og.png`;
 const description = 'Programming, Design, Art, and all the other things I love.';
 
 export const metadata: Metadata = {
+	metadataBase: new URL('https://andybitz.io'),
 	title,
 	description,
 	icons: {
