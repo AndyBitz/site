@@ -21,6 +21,10 @@ export default async function Thoughts() {
 			<div>
 				<ul className={styles.thoughtsList}>
 					{thoughts.map(thought => {
+						if (thought.hidden) {
+							return;
+						}
+
 						if (!thought.postedAt && process.env.NODE_ENV !== 'development') {
 							return;
 						}
