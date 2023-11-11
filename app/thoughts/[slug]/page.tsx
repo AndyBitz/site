@@ -10,7 +10,7 @@ type Props = {
 	searchParams: { [key: string]: string | string[] | undefined };
 }
 
-export const revalidate = 3600; // Revalidate every hour
+export const revalidate = 60; // Revalidate every minute
 
 export async function generateStaticParams() {
 	const [thoughts] = await ronin<Thoughts>(({ get }) => {
