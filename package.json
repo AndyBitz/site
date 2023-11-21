@@ -10,14 +10,17 @@
   "author": "AndyBitz",
   "license": "MIT",
   "dependencies": {
+    "@peculiar/asn1-ecc": "2.3.8",
+    "@peculiar/asn1-schema": "2.3.8",
     "@vercel/analytics": "1.0.1",
-    "next": "13.4.7",
+    "jose": "5.1.1",
+    "next": "14.0.3",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "ronin": "1.0.41"
+    "ronin": "2.0.6"
   },
   "devDependencies": {
-    "@ronin/andybitz": "0.0.1692437895102",
+    "@ronin/andybitz": "^0.0.1700308005999",
     "@types/node": "20.3.3",
     "@types/react": "18.2.14",
     "prettier": "2.8.8",

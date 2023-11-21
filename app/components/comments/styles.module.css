@@ -1,0 +1,122 @@
+.comments {
+	padding-top: 64px;
+	border-top: 1px solid #444;
+}
+
+.commentList {
+	margin-top: 32px;
+	margin-bottom: 32px;
+}
+
+.commentListButton {
+	margin-top: 32px;
+}
+
+.comment {
+	padding: 8px;
+	border-left: 1px solid #444;
+	margin-bottom: 16px;
+}
+
+.commentHead {
+	font-size: 12px;
+	margin-bottom: 8px;
+	display: flex;
+	justify-content: space-between;
+}
+
+.commentHead button {
+	padding: 0;
+	border: none;
+	line-height: inherit;
+	text-decoration: underline;
+	opacity: .3;
+}
+
+.commentHead button:hover {
+	opacity: .7;
+}
+
+.commentAuthor {
+	font-weight: bold;
+}
+
+.comment p {
+	margin: 0;
+	font-size: 16px;
+}
+
+.button {
+	background: none;
+	border: 1px solid #444;
+	border-radius: none;
+	font-size: 14px;
+	padding: 8px;
+}
+
+.writeCommentButton,
+.showCommentsButton {
+	width: 100%;
+	border: none;
+	text-align: left;
+	padding-left: 0;
+	text-decoration: underline;
+}
+
+.loadMoreButton {
+	width: 100%;
+}
+
+.writeCommentForm {
+	position: relative;
+	display: grid;
+	gap: 8px;
+	grid-template-columns: 100px auto;
+}
+
+.writeCommentForm label,
+.writeCommentForm textarea,
+.writeCommentForm input {
+	font-size: 14px;
+	padding: 8px;
+}
+
+.writeCommentForm label {
+	text-align: right;
+}
+
+.writeCommentForm textarea {
+	resize: none;
+	height: 100px;
+	font-family: inherit;
+}
+
+.writeCommentForm button {
+	grid-column-start: 2;
+}
+
+.writeCommentFormError {
+	font-size: 14px;
+	grid-column-start: 2;
+	color: red;
+}
+
+.writeCommentFormNote {
+	font-size: 14px;
+	grid-column-start: 2;
+}
+
+.writeCommentFormSignOut {
+	position: absolute;
+	right: 0;
+	top: 0;
+	font-size: 14px;
+}
+
+.writeCommentFormSignOut button {
+	line-height: inherit;
+	padding: 10px;
+	text-decoration: underline;
+	border: none;
+	font-size: 14px;
+}

@@ -74,6 +74,7 @@ function List() {
 
 					return (
 						<ListItem
+							key={link.title}
 							delay={index + 1}
 							title={link.title}
 							icon={<Icon />}
