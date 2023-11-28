@@ -16,7 +16,7 @@ const JWT_SECRET = new TextEncoder().encode(process.env.JWT_SECRET!);
 const JWT_ALG = 'HS256';
 
 /**
- *
+ * Global limit for all actions to prevent spam.
  */
 async function checkRateLimit() {
 	const limitShort = new Ratelimit({
@@ -39,7 +39,8 @@ async function checkRateLimit() {
 }
 
 /**
- *
+ * Loads a set of comments for one post. Optionally accepts a timestamp to
+ * load comments after a specific time.
  */
 export async function loadComments(postId: string, after?: string) {
 	headers();
@@ -65,7 +66,7 @@ export async function loadComments(postId: string, after?: string) {
 }
 
 /**
- *
+ * Posts a comment to a post.
  */
 export async function createComment(postId: string, text: string) {
 	// TODO: Is there some kind of quality/spam check?
@@ -101,7 +102,7 @@ export async function createComment(postId: string, text: string) {
 }
 
 /**
- *
+ * Deletes a comment.
  */
 export async function deleteComment(commentId: string) {
 	const user = await getAuthenticatedUser();
@@ -118,14 +119,14 @@ export async function deleteComment(commentId: string) {
 }
 
 /**
- *
+ * Removes the cookie to let the user sign out.
  */
 export async function signOut() {
 	cookies().delete(JWT_COOKIE_NAME);
 }
 
 /**
- *
+ * Gets the currently authenticated user from the JWT cookie.
  */
 export async function getAuthenticatedUser() {
 	const jwtCookie = cookies().get(JWT_COOKIE_NAME)?.value;
@@ -145,7 +146,8 @@ export async function getAuthenticatedUser() {
 }
 
 /**
- *
+ * Retrieves a user by username if it exists, and creates a challange
+ * for the sign up or log in.
  */
 export async function getUserAndChallenge(username: string) {
 	headers();
@@ -194,7 +196,8 @@ function validateUsername(username: string) {
 }
 
 /**
- *
+ * Creates a user record in Ronin and sets a JWT cookie on the current
+ * request to have the newly created user signed in.
  */
 export async function createUser(
 	publicUserId: string,
@@ -307,7 +310,7 @@ export async function verifyUser(username: string, signedData: SignedData) {
 }
 
 /**
- *
+ * Creates and sets the JWT cookie based on a user.
  */
 async function createJWTCookie(user: User) {
 	const payload = {
@@ -325,7 +328,7 @@ async function createJWTCookie(user: User) {
 }
 
 /**
- *
+ * Sends a message to me through my Telegram bot.
  */
 async function sendToTelegram(message: string) {
 	const userId = process.env.TELEGRAM_USER_ID;
