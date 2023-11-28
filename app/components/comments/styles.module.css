@@ -44,6 +44,8 @@
 .comment p {
 	margin: 0;
 	font-size: 16px;
+	word-break: break-word;
+	overflow: hidden;
 }
 
 .button {

@@ -1,6 +1,9 @@
 "use server";
 
+import { z } from 'zod';
 import ronin from 'ronin';
+import { kv } from '@vercel/kv';
+import { Ratelimit } from '@upstash/ratelimit';
 import { cookies, headers } from 'next/headers';
 import type { Comment, Comments, Thought, User } from '@ronin/andybitz';
 import { stringToBuffer } from './utils';
@@ -11,6 +14,29 @@ import crypto from 'node:crypto';
 const JWT_COOKIE_NAME = 'andybitz_io_jwt';
 const JWT_SECRET = new TextEncoder().encode(process.env.JWT_SECRET!);
 const JWT_ALG = 'HS256';
+
+/**
+ *
+ */
+async function checkRateLimit() {
+	const limitShort = new Ratelimit({
+		redis: kv,
+		limiter: Ratelimit.slidingWindow(1, '5s'),
+	});
+
+	const limitLong = new Ratelimit({
+		redis: kv,
+		limiter: Ratelimit.slidingWindow(50, '24h'),
+	});
+
+	await Promise.all([limitShort, limitLong].map(async (ratelimit) => {
+		const result = await ratelimit.limit('ratelimit');
+		if (result.success) return;
+
+		const waitFor = result.reset - Date.now();
+		throw new Error(`The current rate limit has been exceeded, try again in ${waitFor} milliseconds.`);
+	}));
+}
 
 /**
  *
@@ -42,24 +68,34 @@ export async function loadComments(postId: string, after?: string) {
  *
  */
 export async function createComment(postId: string, text: string) {
+	// TODO: Is there some kind of quality/spam check?
+	const validatedComment = z.string()
+		.min(3, 'The comment must be at least 3 characters long.')
+		.max(512, 'The comment must not be more than 512 characters long.')
+		.parse(text);
+
 	const user = await getAuthenticatedUser();
 	if (!user) throw new Error('You are not logged in. Log in, in order to post a comment.');
+
+	await checkRateLimit();
 
 	const [thought] = await ronin<Thought>(({ get }) => {
 		get.thought.with = { id: postId };
 	});
 	if (!thought) throw new Error('No need to comment on a thought that does not concern me.');
 
-	// TODO: Validate comment
-
 	const [comment] = await ronin<Comment>(({ create }) => {
 		create.comment.with = {
 			thought: thought.id,
 			user: user.id,
 			username: user.username,
-			text,
+			text: validatedComment,
 		};
 	});
+
+	// TODO: Could use proper escaping
+	const escapedComment = validatedComment.replaceAll('<', '&lt;').replaceAll('>', '&gt;');
+	await sendToTelegram(`<b>${user.username}</b> left a comment on <b>${thought.title}</b>:\n\n${escapedComment}`);
 
 	return comment;
 }
@@ -114,6 +150,8 @@ export async function getAuthenticatedUser() {
 export async function getUserAndChallenge(username: string) {
 	headers();
 
+	validateUsername(username);
+
 	const [user] = await ronin<User>(({ get }) => {
 		get.user = {
 			with: {
@@ -147,6 +185,14 @@ interface PublicKey {
 	transports: string[]
 }
 
+function validateUsername(username: string) {
+	// Validate the `username`
+	z.string()
+		.min(3, 'Username must be at least 3 characters long')
+		.max(24, 'Username must not be longer than 24 characters.')
+		.parse(username);
+}
+
 /**
  *
  */
@@ -157,14 +203,27 @@ export async function createUser(
 ) {
 	headers();
 
-	// TODO:
-	// - Add rate limit
-	// - Add captcha
-	// - Validate `publicUserId`
-	//   - must be 32 byte hex
-	// - Validate username
-	// - Validate public key
-	//   - how?
+	validateUsername(username);
+
+	// Validate the `publicUserId`
+	z.string()
+		.regex(/^user_[a-f0-9]{32}$/, 'Public User ID did not match the pattern.')
+		.parse(publicUserId);
+
+	// Validate `publicKey`
+	z.object({
+		id: z.string(),
+		authenticatorData: z.string(),
+		publicKey: z.string(),
+		publicKeyAlgorithm: z.literal(-7),
+		transports: z.array(z.string()),
+	}).parse(publicKey);
+
+	if (JSON.stringify(publicKey).length > 1024) {
+		throw new Error('Public key is too large.');
+	}
+
+	await checkRateLimit();
 
 	const [user] = await ronin<User>(({ create }) => {
 		create.user.with = {
@@ -196,8 +255,7 @@ interface SignedData {
 export async function verifyUser(username: string, signedData: SignedData) {
 	headers();
 
-	// TODO:
-	// - Add a rate limit
+	await checkRateLimit();
 
 	const [user] = await ronin<User>(({ get }) => {
 		get.user.with = {
@@ -264,4 +322,28 @@ async function createJWTCookie(user: User) {
 		.sign(JWT_SECRET);
 
 	cookies().set(JWT_COOKIE_NAME, jwt);
+}
+
+/**
+ *
+ */
+async function sendToTelegram(message: string) {
+	const userId = process.env.TELEGRAM_USER_ID;
+	const botToken = process.env.TELEGRAM_BOT_TOKEN;
+
+	const response = await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+		method: 'POST',
+		headers: {
+			'content-type': 'application/json',
+		},
+		body: JSON.stringify({
+			chat_id: userId,
+			text: message,
+			parse_mode: 'HTML'
+		}),
+	});
+
+	if (!response.ok) {
+		console.error(`Failed to send message to Telegram: ${await response.text()}`);
+	}
 }
