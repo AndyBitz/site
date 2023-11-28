@@ -20,7 +20,7 @@ function Intro() {
 		<div className={styles.intro}>
 			<div className={styles.introImage}>
 				<Glitch maxBoxWidthAndHeight={80}>
-					<Image src="/profile.png" alt="profile" width={128} height={128} />
+					<Image src="/profile.png?v=1" alt="profile" width={128} height={128} />
 				</Glitch>
 			</div>
 			<div className={styles.introName}>
