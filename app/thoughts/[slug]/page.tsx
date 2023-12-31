@@ -4,6 +4,7 @@ import type { Metadata, ResolvingMetadata } from 'next';
 import type { Thought, Thoughts } from '@ronin/andybitz';
 import { Glitch } from '../../components/glitch';
 import { Prosemirror } from '../../components/prosemirror';
+import { Comments } from '../../components/comments';
 
 type Props = {
 	params: { slug: string; };
@@ -64,6 +65,7 @@ export default async function Page({ params }: { params: { slug: string; }}) {
 				</Glitch>
 			</h1>
 			<Prosemirror data={thought.text as unknown as any} />
+			<Comments postId={thought.id} />
 		</>
 	);
 }
