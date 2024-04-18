@@ -1,11 +1,11 @@
 "use server";
 
 import { z } from 'zod';
-import ronin from 'ronin';
+import { get, create, drop } from 'ronin';
 import { kv } from '@vercel/kv';
 import { Ratelimit } from '@upstash/ratelimit';
 import { cookies, headers } from 'next/headers';
-import type { Comment, Comments, Thought, User } from '@ronin/andybitz';
+import type { User } from '@ronin/andybitz';
 import { stringToBuffer } from './utils';
 import { unwrapEC2Sig } from './unwrap-ec2-signature';
 import { SignJWT, jwtVerify } from 'jose';
@@ -45,17 +45,15 @@ async function checkRateLimit() {
 export async function loadComments(postId: string, after?: string) {
 	headers();
 
-	const [comments] = await ronin<Comments>(({ get }) => {
-		get.comments = {
-			with: {
-				thought: postId
-			},
-			orderedBy: {
-				descending: ['ronin.createdAt'],
-			},
-			limitedTo: 1,
-			after,
-		};
+	const comments = await get.comments({
+		with: {
+			thought: postId
+		},
+		orderedBy: {
+			descending: ['ronin.createdAt'],
+		},
+		limitedTo: 1,
+		after
 	});
 
 	return {
@@ -80,18 +78,14 @@ export async function createComment(postId: string, text: string) {
 
 	await checkRateLimit();
 
-	const [thought] = await ronin<Thought>(({ get }) => {
-		get.thought.with = { id: postId };
-	});
+	const thought = await get.thought.with.id(postId);
 	if (!thought) throw new Error('No need to comment on a thought that does not concern me.');
 
-	const [comment] = await ronin<Comment>(({ create }) => {
-		create.comment.with = {
-			thought: thought.id,
-			user: user.id,
-			username: user.username,
-			text: validatedComment,
-		};
+	const comment = await create.comment.with({
+		thought: thought.id,
+		user: user.id,
+		username: user.username,
+		text: validatedComment,
 	});
 
 	// TODO: Could use proper escaping
@@ -108,14 +102,10 @@ export async function deleteComment(commentId: string) {
 	const user = await getAuthenticatedUser();
 	if (!user) throw new Error('Not authorized to delete comment.');
 
-	const [comment] = await ronin<Comment>(({ get }) => {
-		get.comment.with = { id: commentId };
-	});
+	const comment = await get.comment.with.id(commentId);
 	if (comment?.user !== user.id) throw new Error('Not authorized to delete comment.');
 
-	await ronin(({ drop }) => {
-		drop.comment.with = { id: commentId };
-	});
+	await drop.comment.with.id(commentId);
 }
 
 /**
@@ -154,13 +144,7 @@ export async function getUserAndChallenge(username: string) {
 
 	validateUsername(username);
 
-	const [user] = await ronin<User>(({ get }) => {
-		get.user = {
-			with: {
-				username,
-			},
-		};
-	});
+	const user = await get.user.with.username(username);
 
 	const publicUserId = user
 		? user.publicUserId
@@ -228,12 +212,10 @@ export async function createUser(
 
 	await checkRateLimit();
 
-	const [user] = await ronin<User>(({ create }) => {
-		create.user.with = {
-			publicUserId,
-			username,
-			publicKey: publicKey,
-		};
+	const user = await create.user.with({
+		publicUserId,
+		username,
+		publicKey: publicKey,
 	});
 
 	await createJWTCookie(user);
@@ -260,11 +242,7 @@ export async function verifyUser(username: string, signedData: SignedData) {
 
 	await checkRateLimit();
 
-	const [user] = await ronin<User>(({ get }) => {
-		get.user.with = {
-			username: username,
-		};
-	});
+	const user = await get.user.with.username(username);
 
 	if (!user) return null;
 

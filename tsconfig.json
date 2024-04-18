@@ -23,7 +23,8 @@
       {
         "name": "next"
       }
-    ]
+    ],
+    "types": ["@ronin/andybitz"]
   },
   "include": [
     "next-env.d.ts",

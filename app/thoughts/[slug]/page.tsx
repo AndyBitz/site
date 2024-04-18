@@ -1,7 +1,6 @@
-import ronin from 'ronin';
+import { get } from 'ronin';
 import { notFound } from 'next/navigation';
 import type { Metadata, ResolvingMetadata } from 'next';
-import type { Thought, Thoughts } from '@ronin/andybitz';
 import { Glitch } from '../../components/glitch';
 import { Prosemirror } from '../../components/prosemirror';
 import { Comments } from '../../components/comments';
@@ -14,9 +13,7 @@ type Props = {
 export const revalidate = 60; // Revalidate every minute
 
 export async function generateStaticParams() {
-	const [thoughts] = await ronin<Thoughts>(({ get }) => {
-		get.thoughts.orderedBy!.descending = ['postedAt'];
-	});
+	const thoughts = await get.thoughts.orderedBy.descending(['postedAt']);
 
 	const params: Props['params'][] = [];
 
@@ -35,11 +32,7 @@ export async function generateMetadata(
 ): Promise<Metadata> {
 	const resolvedParent = await parent
 
-	const [thought] = await ronin<Thought>(({ get }) => {
-		get.thought.with = {
-			slug: params.slug,
-		};
-	});
+	const thought = await get.thought.with.slug(params.slug);
 
 	if (!thought) notFound();
 
@@ -49,11 +42,7 @@ export async function generateMetadata(
 }
 
 export default async function Page({ params }: { params: { slug: string; }}) {
-	const [thought] = await ronin<Thought>(({ get }) => {
-		get.thought.with = {
-			slug: params.slug,
-		};
-	});
+	const thought = await get.thought.with.slug(params.slug);
 
 	if (!thought) notFound();
 
