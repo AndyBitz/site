@@ -32,7 +32,7 @@ export async function generateMetadata(
 ): Promise<Metadata> {
 	const resolvedParent = await parent
 
-	const thought = await get.thought.with.slug(params.slug);
+	const thought = await get.thought.where.slug.is(params.slug);
 
 	if (!thought) notFound();
 
@@ -42,7 +42,7 @@ export async function generateMetadata(
 }
 
 export default async function Page({ params }: { params: { slug: string; }}) {
-	const thought = await get.thought.with.slug(params.slug);
+	const thought = await get.thought.where.slug.is(params.slug);
 
 	if (!thought) notFound();
 

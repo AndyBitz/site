@@ -46,8 +46,8 @@ export async function loadComments(postId: string, after?: string) {
 	headers();
 
 	const comments = await get.comments({
-		with: {
-			thought: postId
+		where: {
+			thought: { is: postId }
 		},
 		orderedBy: {
 			descending: ['ronin.createdAt'],
@@ -78,7 +78,7 @@ export async function createComment(postId: string, text: string) {
 
 	await checkRateLimit();
 
-	const thought = await get.thought.with.id(postId);
+	const thought = await get.thought.where.id.is(postId);
 	if (!thought) throw new Error('No need to comment on a thought that does not concern me.');
 
 	const comment = await create.comment.with({
@@ -102,10 +102,10 @@ export async function deleteComment(commentId: string) {
 	const user = await getAuthenticatedUser();
 	if (!user) throw new Error('Not authorized to delete comment.');
 
-	const comment = await get.comment.with.id(commentId);
+	const comment = await get.comment.where.id.is(commentId);
 	if (comment?.user !== user.id) throw new Error('Not authorized to delete comment.');
 
-	await drop.comment.with.id(commentId);
+	await drop.comment.where.id.is(commentId);
 }
 
 /**
@@ -144,7 +144,7 @@ export async function getUserAndChallenge(username: string) {
 
 	validateUsername(username);
 
-	const user = await get.user.with.username(username);
+	const user = await get.user.where.username.is(username);
 
 	const publicUserId = user
 		? user.publicUserId
@@ -242,7 +242,7 @@ export async function verifyUser(username: string, signedData: SignedData) {
 
 	await checkRateLimit();
 
-	const user = await get.user.with.username(username);
+	const user = await get.user.where.username.is(username);
 
 	if (!user) return null;
 
