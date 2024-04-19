@@ -23,15 +23,13 @@
       {
         "name": "next"
       }
-    ],
-    "types": ["@ronin/andybitz"]
+    ]
   },
   "include": [
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    ".next/types/**/*.ts",
-    "@ronin/andybitz"
+    ".next/types/**/*.ts"
   ],
   "exclude": [
     "node_modules"
