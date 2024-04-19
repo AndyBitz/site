@@ -4,8 +4,7 @@ import { Breadcrumb } from '../components/breadcrumb';
 import './layout.css';
 
 type Props = {
-	params: {};
-	searchParams: { [key: string]: string | string[] | undefined };
+	params: {}
 }
 
 export async function generateMetadata(
