@@ -1,8 +1,8 @@
-import { get } from 'react-ronin';
+import { RichText, get } from 'react-ronin';
+import type { RichTextContent } from 'react-ronin/types';
 import { notFound } from 'next/navigation';
 import type { Metadata, ResolvingMetadata } from 'next';
 import { Glitch } from '../../components/glitch';
-import { Prosemirror } from '../../components/prosemirror';
 import { Comments } from '../../components/comments';
 
 type Props = {
@@ -53,7 +53,7 @@ export default async function Page({ params }: { params: { slug: string; }}) {
 					{`/ ${thought.title}`}
 				</Glitch>
 			</h1>
-			<Prosemirror data={thought.text as unknown as any} />
+			<RichText data={thought.text as unknown as RichTextContent} />
 			<Comments postId={thought.id} />
 		</>
 	);
