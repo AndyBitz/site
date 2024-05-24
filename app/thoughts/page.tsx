@@ -1,4 +1,4 @@
-import { get } from 'ronin';
+import { get } from 'react-ronin';
 import { Link } from "../components/link";
 import styles from './page.module.css';
 import { Glitch } from '../components/glitch';

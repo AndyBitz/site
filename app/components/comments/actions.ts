@@ -1,7 +1,7 @@
 "use server";
 
 import { z } from 'zod';
-import { get, create, drop } from 'ronin';
+import { get, create, drop } from 'react-ronin';
 import { kv } from '@vercel/kv';
 import { Ratelimit } from '@upstash/ratelimit';
 import { cookies, headers } from 'next/headers';

@@ -1,4 +1,4 @@
-import { get } from 'ronin';
+import { get } from 'react-ronin';
 import { notFound } from 'next/navigation';
 import type { Metadata, ResolvingMetadata } from 'next';
 import { Glitch } from '../../components/glitch';
