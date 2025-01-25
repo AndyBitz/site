@@ -4,6 +4,7 @@ import { notFound } from 'next/navigation';
 import type { Metadata, ResolvingMetadata } from 'next';
 import { Glitch } from '../../components/glitch';
 import { Comments } from '../../components/comments';
+import { getThoughts } from '../actions';
 
 type Props = {
 	params: { slug: string; };
@@ -11,6 +12,14 @@ type Props = {
 }
 
 export const revalidate = 60; // Revalidate every minute
+
+async function getThought(slug: string) {
+	// const thought = await get.thought.with.slug(slug);
+	const thought = await getThoughts()
+		.then((data) => data.find(t => t.slug === slug));
+
+	return thought;
+}
 
 export async function generateStaticParams() {
 	const thoughts = await get.thoughts.orderedBy.descending(['postedAt']);
@@ -32,8 +41,7 @@ export async function generateMetadata(
 ): Promise<Metadata> {
 	const resolvedParent = await parent
 
-	const thought = await get.thought.with.slug(params.slug);
-
+	const thought = await getThought(params.slug);
 	if (!thought) notFound();
 
 	return {
@@ -42,8 +50,7 @@ export async function generateMetadata(
 }
 
 export default async function Page({ params }: { params: { slug: string; }}) {
-	const thought = await get.thought.with.slug(params.slug);
-
+	const thought = await getThought(params.slug);
 	if (!thought) notFound();
 
 	return (
@@ -53,7 +60,9 @@ export default async function Page({ params }: { params: { slug: string; }}) {
 					{`/ ${thought.title}`}
 				</Glitch>
 			</h1>
-			<RichText data={thought.text as unknown as RichTextContent} />
+			<div style={{ whiteSpace: 'pre' }}>
+				<RichText data={thought.text as unknown as RichTextContent} />
+			</div>
 			<Comments postId={thought.id} />
 		</>
 	);
