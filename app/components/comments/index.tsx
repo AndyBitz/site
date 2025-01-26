@@ -6,7 +6,7 @@ import styles from './styles.module.css';
 import { CommentList } from './comment-list';
 import { loadComments, getAuthenticatedUser } from './actions';
 import { CommentInput } from './comment-input';
-import { Comment, Comments } from '@ronin/andybitz';
+import type { Comment } from '../../../schema';
 
 /**
  * Either asks to show the comments, or renders them.
@@ -19,11 +19,13 @@ export function Comments({ postId }: { postId: string }) {
 	const moreAfter = comments[comments.length - 1]?.moreAfter;
 	const hasMore = Boolean(moreAfter);
 
-	const unshiftComment = useCallback(async (comment: Comment) => {
+	const unshiftComment = useCallback(async (defaultComment: typeof Comment) => {
+		const comment = defaultComment as typeof Comment & { ronin: { createdAt: Date } };
+
 		setComments((prev) => {
 			const next = [
 				{
-					comments: [comment] as unknown as Comments,
+					comments: [comment],
 					moreAfter: comment.ronin.createdAt.getTime().toString(),
 					moreBefore: comment.ronin.createdAt.getTime().toString(),
 				},

@@ -1,9 +1,11 @@
-import { RichText, get } from 'react-ronin';
+import { RichText } from 'react-ronin';
 import type { RichTextContent } from 'react-ronin/types';
 import { notFound } from 'next/navigation';
 import type { Metadata, ResolvingMetadata } from 'next';
 import { Glitch } from '../../components/glitch';
 import { Comments } from '../../components/comments';
+import type { Thought } from '../../../schema';
+import { get } from '../../utils/db';
 
 type Props = {
 	params: { slug: string; };
@@ -13,7 +15,7 @@ type Props = {
 export const revalidate = 60; // Revalidate every minute
 
 export async function generateStaticParams() {
-	const thoughts = await get.thoughts.orderedBy.descending(['postedAt']);
+	const thoughts = await get.thoughts.orderedBy.descending(['postedAt']) as Array<typeof Thought>;
 
 	const params: Props['params'][] = [];
 
@@ -32,7 +34,8 @@ export async function generateMetadata(
 ): Promise<Metadata> {
 	const resolvedParent = await parent
 
-	const thought = await get.thought.with.slug(params.slug);
+	// @ts-expect-error RONIN queries will soon be inferred from models again.
+	const thought = await get.thought.with.slug(params.slug) as (typeof Thought) | null;
 
 	if (!thought) notFound();
 
@@ -42,7 +45,8 @@ export async function generateMetadata(
 }
 
 export default async function Page({ params }: { params: { slug: string; }}) {
-	const thought = await get.thought.with.slug(params.slug);
+	// @ts-expect-error RONIN queries will soon be inferred from models again.
+	const thought = await get.thought.with.slug(params.slug) as (typeof Thought) | null;
 
 	if (!thought) notFound();
 

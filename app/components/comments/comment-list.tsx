@@ -2,6 +2,7 @@ import { useCallback } from 'react';
 import { deleteComment, getAuthenticatedUser, loadComments } from './actions';
 import { Button } from './button';
 import styles from './styles.module.css';
+import { Comment } from '../../../schema';
 
 /**
  * List all comments for a given post and includes
@@ -33,7 +34,8 @@ export function CommentList({
 		<div className={styles.commentList}>
 			<div>
 				{comments.map(list => {
-					return list.comments.map(comment => {
+					return list.comments.map(defaultComment => {
+						const comment = defaultComment as typeof Comment & { ronin: { createdAt: Date } };
 						const date = new Date(comment.ronin.createdAt).toISOString();
 
 						return (

@@ -8,5 +8,8 @@ node_modules
 # other
 .vscode
 .env*
-
 .env*.local
+
+# database
+.ronin
+.protocols
