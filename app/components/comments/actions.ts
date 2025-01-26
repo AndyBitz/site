@@ -104,7 +104,7 @@ export async function deleteComment(commentId: string) {
 	if (!user) throw new Error('Not authorized to delete comment.');
 
 	// @ts-expect-error RONIN queries will soon be inferred from models again.
-	const comment = await get.comment.with.id(commentId) as typeof Comment|null;
+	const comment = await get.comment.with.id(commentId) as typeof Comment | null;
 	if (comment?.user !== user.id) throw new Error('Not authorized to delete comment.');
 
 	// @ts-expect-error RONIN queries will soon be inferred from models again.
@@ -148,7 +148,7 @@ export async function getUserAndChallenge(username: string) {
 	validateUsername(username);
 
 	// @ts-expect-error RONIN queries will soon be inferred from models again.
-	const user = await get.user.with.username(username) as typeof User|null;
+	const user = await get.user.with.username(username) as typeof User | null;
 
 	const publicUserId = user
 		? user.publicUserId
@@ -247,7 +247,7 @@ export async function verifyUser(username: string, signedData: SignedData) {
 	await checkRateLimit();
 
 	// @ts-expect-error RONIN queries will soon be inferred from models again.
-	const user = await get.user.with.username(username) as typeof User|null;
+	const user = await get.user.with.username(username) as typeof User | null;
 
 	if (!user) return null;
 
