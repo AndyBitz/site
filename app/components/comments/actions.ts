@@ -1,15 +1,15 @@
 "use server";
 
 import { z } from 'zod';
-import { get, create, drop } from 'react-ronin';
+import { get, add, remove } from 'ronin';
 import { kv } from '@vercel/kv';
 import { Ratelimit } from '@upstash/ratelimit';
 import { cookies, headers } from 'next/headers';
-import type { User } from '@ronin/andybitz';
 import { stringToBuffer } from './utils';
 import { unwrapEC2Sig } from './unwrap-ec2-signature';
 import { SignJWT, jwtVerify } from 'jose';
 import crypto from 'node:crypto';
+import type { Comment, User } from '../../../schema';
 
 const JWT_COOKIE_NAME = 'andybitz_io_jwt';
 const JWT_SECRET = new TextEncoder().encode(process.env.JWT_SECRET!);
@@ -78,15 +78,16 @@ export async function createComment(postId: string, text: string) {
 
 	await checkRateLimit();
 
+	// @ts-expect-error RONIN queries will soon be inferred from models again.
 	const thought = await get.thought.with.id(postId);
 	if (!thought) throw new Error('No need to comment on a thought that does not concern me.');
 
-	const comment = await create.comment.with({
+	const comment = await add.comment.to({
 		thought: thought.id,
 		user: user.id,
 		username: user.username,
 		text: validatedComment,
-	});
+	}) as typeof Comment;
 
 	// TODO: Could use proper escaping
 	const escapedComment = validatedComment.replaceAll('<', '&lt;').replaceAll('>', '&gt;');
@@ -102,10 +103,12 @@ export async function deleteComment(commentId: string) {
 	const user = await getAuthenticatedUser();
 	if (!user) throw new Error('Not authorized to delete comment.');
 
-	const comment = await get.comment.with.id(commentId);
+	// @ts-expect-error RONIN queries will soon be inferred from models again.
+	const comment = await get.comment.with.id(commentId) as typeof Comment|null;
 	if (comment?.user !== user.id) throw new Error('Not authorized to delete comment.');
 
-	await drop.comment.with.id(commentId);
+	// @ts-expect-error RONIN queries will soon be inferred from models again.
+	await remove.comment.with.id(commentId);
 }
 
 /**
@@ -144,7 +147,8 @@ export async function getUserAndChallenge(username: string) {
 
 	validateUsername(username);
 
-	const user = await get.user.with.username(username);
+	// @ts-expect-error RONIN queries will soon be inferred from models again.
+	const user = await get.user.with.username(username) as typeof User|null;
 
 	const publicUserId = user
 		? user.publicUserId
@@ -212,11 +216,11 @@ export async function createUser(
 
 	await checkRateLimit();
 
-	const user = await create.user.with({
+	const user = await add.user.to({
 		publicUserId,
 		username,
 		publicKey: publicKey,
-	});
+	}) as typeof User;
 
 	await createJWTCookie(user);
 }
@@ -242,7 +246,8 @@ export async function verifyUser(username: string, signedData: SignedData) {
 
 	await checkRateLimit();
 
-	const user = await get.user.with.username(username);
+	// @ts-expect-error RONIN queries will soon be inferred from models again.
+	const user = await get.user.with.username(username) as typeof User|null;
 
 	if (!user) return null;
 
@@ -290,7 +295,7 @@ export async function verifyUser(username: string, signedData: SignedData) {
 /**
  * Creates and sets the JWT cookie based on a user.
  */
-async function createJWTCookie(user: User) {
+async function createJWTCookie(user: typeof User) {
 	const payload = {
 		sub: user.id,
 		name: user.username,

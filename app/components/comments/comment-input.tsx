@@ -1,9 +1,9 @@
-import type { Comment } from '@ronin/andybitz';
 import { FormEvent, useCallback, useRef, useState } from 'react';
 import { Button } from './button';
 import { createUser, getAuthenticatedUser, getUserAndChallenge, verifyUser, createComment, signOut } from './actions';
 import { bufferToString, stringToBuffer } from './utils';
 import styles from './styles.module.css';
+import type { Comment } from '../../../schema';
 
 /**
  * Allows to sign in, sign out, and post a comment.
@@ -17,7 +17,7 @@ export function CommentInput({
 	postId: string;
 	onLogIn: () => Promise<void>;
 	user?: Awaited<ReturnType<typeof getAuthenticatedUser>>;
-	unshiftComment: (comment: Comment) => void;
+	unshiftComment: (comment: typeof Comment) => void;
 }) {
 	const [isLoading, setLoading] = useState(false);
 	const [showInput, setShowInput] = useState(false);

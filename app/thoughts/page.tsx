@@ -1,12 +1,13 @@
-import { get } from 'react-ronin';
+import { get } from 'ronin';
 import { Link } from "../components/link";
 import styles from './page.module.css';
 import { Glitch } from '../components/glitch';
+import type { Thought } from '../../schema';
 
 export const revalidate = 60;
 
 export default async function Thoughts() {
-	const thoughts = await get.thoughts.orderedBy.descending(['postedAt']);
+	const thoughts = await get.thoughts.orderedBy.descending(['postedAt']) as Array<typeof Thought>;
 
 	return (
 		<>

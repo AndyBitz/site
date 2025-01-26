@@ -4,7 +4,8 @@
   "scripts": {
     "dev": "next",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "apply-schema": "ronin diff --apply"
   },
   "repository": "AndyBitz/site",
   "author": "AndyBitz",
@@ -20,10 +21,10 @@
     "react": "18.3.1",
     "react-dom": "18.3.1",
     "react-ronin": "2.2.4",
+    "ronin": "6.0.23",
     "zod": "3.22.4"
   },
   "devDependencies": {
-    "@ronin/andybitz": "latest",
     "@types/node": "20.10.0",
     "@types/react": "18.2.39",
     "prettier": "3.1.0",
