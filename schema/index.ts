@@ -1,20 +1,5 @@
 import { boolean, date, json, link, model, string } from 'ronin/schema';
 
-export const Comment = model({
-  slug: "comment",
-
-  fields: {
-    string: string(),
-    thought: link({
-      target: "thought",
-    }),
-    user: link({
-      target: "user",
-    }),
-    username: string(),
-  },
-});
-
 export const Thought = model({
   slug: "thought",
 
@@ -34,6 +19,21 @@ export const User = model({
   fields: {
     publicKey: string(),
     publicUserId: string(),
+    username: string(),
+  },
+});
+
+export const Comment = model({
+  slug: "comment",
+
+  fields: {
+    text: string(),
+    thought: link({
+      target: "thought",
+    }),
+    user: link({
+      target: "user",
+    }),
     username: string(),
   },
 });
