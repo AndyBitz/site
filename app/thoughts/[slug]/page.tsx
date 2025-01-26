@@ -57,7 +57,9 @@ export default async function Page({ params }: { params: { slug: string; }}) {
 					{`/ ${thought.title}`}
 				</Glitch>
 			</h1>
-			<RichText data={thought.text as unknown as RichTextContent} />
+			<div style={{ whiteSpace: 'pre' }}>
+				<RichText data={thought.text as unknown as RichTextContent} />
+			</div>
 			<Comments postId={thought.id} />
 		</>
 	);
