@@ -11,4 +11,5 @@ node_modules
 .env*.local
 
 # database migrations
+.ronin
 .protocols
