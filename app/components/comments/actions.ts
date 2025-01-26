@@ -1,7 +1,6 @@
 "use server";
 
 import { z } from 'zod';
-import { get, add, remove } from 'ronin';
 import { kv } from '@vercel/kv';
 import { Ratelimit } from '@upstash/ratelimit';
 import { cookies, headers } from 'next/headers';
@@ -10,6 +9,7 @@ import { unwrapEC2Sig } from './unwrap-ec2-signature';
 import { SignJWT, jwtVerify } from 'jose';
 import crypto from 'node:crypto';
 import type { Comment, User } from '../../../schema';
+import { get, add, remove } from '../../utils/db';
 
 const JWT_COOKIE_NAME = 'andybitz_io_jwt';
 const JWT_SECRET = new TextEncoder().encode(process.env.JWT_SECRET!);

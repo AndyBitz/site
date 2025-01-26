@@ -1,4 +1,4 @@
-import { boolean, date, json, link, model, string } from "ronin/schema";
+import { boolean, date, json, link, model, string } from 'ronin/schema';
 
 export const Comment = model({
   slug: "comment",
