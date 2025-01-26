@@ -4,8 +4,7 @@
   "scripts": {
     "dev": "next",
     "build": "next build",
-    "start": "next start",
-    "apply-schema": "ronin diff --apply"
+    "start": "next start"
   },
   "repository": "AndyBitz/site",
   "author": "AndyBitz",
