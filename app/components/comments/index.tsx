@@ -19,11 +19,13 @@ export function Comments({ postId }: { postId: string }) {
 	const moreAfter = comments[comments.length - 1]?.moreAfter;
 	const hasMore = Boolean(moreAfter);
 
-	const unshiftComment = useCallback(async (comment: typeof Comment) => {
+	const unshiftComment = useCallback(async (defaultComment: typeof Comment) => {
+		const comment = defaultComment as typeof Comment & { ronin: { createdAt: Date } };
+
 		setComments((prev) => {
 			const next = [
 				{
-					comments: [comment] as unknown as Array<typeof Comment>,
+					comments: [comment],
 					moreAfter: comment.ronin.createdAt.getTime().toString(),
 					moreBefore: comment.ronin.createdAt.getTime().toString(),
 				},

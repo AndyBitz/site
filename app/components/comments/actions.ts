@@ -42,7 +42,11 @@ async function checkRateLimit() {
  * Loads a set of comments for one post. Optionally accepts a timestamp to
  * load comments after a specific time.
  */
-export async function loadComments(postId: string, after?: string) {
+export async function loadComments(postId: string, after?: string): Promise<{
+	comments: Array<typeof Comment>;
+	moreAfter?: string;
+	moreBefore?: string;
+}> {
 	headers();
 
 	const comments = await get.comments({
@@ -54,7 +58,7 @@ export async function loadComments(postId: string, after?: string) {
 		},
 		limitedTo: 1,
 		after
-	});
+	}) as Array<typeof Comment> & { moreAfter?: string; moreBefore?: string; };
 
 	return {
 		comments: comments,
