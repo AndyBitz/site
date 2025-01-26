@@ -17,7 +17,7 @@ export const User = model({
   slug: "user",
 
   fields: {
-    publicKey: string(),
+    publicKey: json(),
     publicUserId: string(),
     username: string(),
   },
