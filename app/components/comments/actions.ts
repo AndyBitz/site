@@ -57,7 +57,7 @@ export async function loadComments(postId: string, after?: string): Promise<{
 			descending: ['ronin.createdAt'],
 		},
 		limitedTo: 1,
-		...(after ? { after } : {})
+		after
 	}) as Array<typeof Comment> & { moreAfter?: string; moreBefore?: string; };
 
 	return {
