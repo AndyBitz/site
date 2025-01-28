@@ -86,7 +86,7 @@ export async function createComment(postId: string, text: string) {
 	const thought = await get.thought.with.id(postId);
 	if (!thought) throw new Error('No need to comment on a thought that does not concern me.');
 
-	const comment = await add.comment.to({
+	const comment = await add.comment.with({
 		thought: thought.id,
 		user: user.id,
 		username: user.username,
@@ -220,7 +220,7 @@ export async function createUser(
 
 	await checkRateLimit();
 
-	const user = await add.user.to({
+	const user = await add.user.with({
 		publicUserId,
 		username,
 		publicKey: publicKey,
