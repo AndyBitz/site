@@ -1,11 +1,11 @@
 import { RichText } from 'react-ronin';
+import { get } from 'ronin';
 import type { RichTextContent } from 'react-ronin/types';
 import { notFound } from 'next/navigation';
 import type { Metadata, ResolvingMetadata } from 'next';
 import { Glitch } from '../../components/glitch';
 import { Comments } from '../../components/comments';
 import type { Thought } from '../../../schema';
-import { get } from '../../utils/db';
 
 type Props = {
 	params: { slug: string; };

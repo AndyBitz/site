@@ -1,8 +1,8 @@
+import { get } from 'ronin';
 import { Link } from "../components/link";
 import styles from './page.module.css';
 import { Glitch } from '../components/glitch';
 import type { Thought } from '../../schema';
-import { get } from '../utils/db';
 
 export const revalidate = 60;
 
