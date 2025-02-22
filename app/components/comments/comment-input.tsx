@@ -1,6 +1,6 @@
 import { FormEvent, useCallback, useRef, useState } from 'react';
 import { Button } from './button';
-import { createUser, getAuthenticatedUser, getUserAndChallenge, verifyUser, createComment, signOut } from './actions';
+import { createUser, getAuthenticatedUser, getUserAndChallenge, verifyUser, createComment, signOut, CommentWithUser } from './actions';
 import { bufferToString, stringToBuffer } from './utils';
 import styles from './styles.module.css';
 import type { Comment } from '../../../schema';
@@ -17,7 +17,7 @@ export function CommentInput({
 	postId: string;
 	onLogIn: () => Promise<void>;
 	user?: Awaited<ReturnType<typeof getAuthenticatedUser>>;
-	unshiftComment: (comment: typeof Comment) => void;
+	unshiftComment: (comment: CommentWithUser) => void;
 }) {
 	const [isLoading, setLoading] = useState(false);
 	const [showInput, setShowInput] = useState(false);
