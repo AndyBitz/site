@@ -4,7 +4,7 @@ import { z } from 'zod';
 import { kv } from '@vercel/kv';
 import { Ratelimit } from '@upstash/ratelimit';
 import { cookies, headers } from 'next/headers';
-import { get, add, remove } from 'ronin';
+import { get, add, remove, batch } from 'ronin';
 import { stringToBuffer } from './utils';
 import { unwrapEC2Sig } from './unwrap-ec2-signature';
 import { SignJWT, jwtVerify } from 'jose';
@@ -38,12 +38,14 @@ async function checkRateLimit() {
 	}));
 }
 
+export type CommentWithUser = Omit<typeof Comment, 'user'> & { user: typeof User };
+
 /**
  * Loads a set of comments for one post. Optionally accepts a timestamp to
  * load comments after a specific time.
  */
 export async function loadComments(postId: string, after?: string): Promise<{
-	comments: Array<typeof Comment>;
+	comments: Array<CommentWithUser>;
 	moreAfter?: string;
 	moreBefore?: string;
 }> {
@@ -56,9 +58,10 @@ export async function loadComments(postId: string, after?: string): Promise<{
 		orderedBy: {
 			descending: ['ronin.createdAt'],
 		},
+		using: ['user'],
 		limitedTo: 1,
 		after
-	}) as Array<typeof Comment> & { moreAfter?: string; moreBefore?: string; };
+	}) as Array<CommentWithUser> & { moreAfter?: string; moreBefore?: string; };
 
 	return {
 		comments: comments,
@@ -70,7 +73,7 @@ export async function loadComments(postId: string, after?: string): Promise<{
 /**
  * Posts a comment to a post.
  */
-export async function createComment(postId: string, text: string) {
+export async function createComment(postId: string, text: string): Promise<CommentWithUser> {
 	// TODO: Is there some kind of quality/spam check?
 	const validatedComment = z.string()
 		.min(3, 'The comment must be at least 3 characters long.')
@@ -86,18 +89,21 @@ export async function createComment(postId: string, text: string) {
 	const thought = await get.thought.with.id(postId);
 	if (!thought) throw new Error('No need to comment on a thought that does not concern me.');
 
-	const comment = await add.comment.with({
-		thought: thought.id,
-		user: user.id,
-		username: user.username,
-		text: validatedComment,
-	}) as typeof Comment;
+	const [comment, loadedUser] = await batch(() => [
+		add.comment.with({
+			thought: thought.id,
+			user: user.id,
+			text: validatedComment,
+		}) as unknown as Promise<typeof Comment>,
+		// @ts-expect-error RONIN queries will soon be inferred from models again.
+		get.user.with.id(user.id) as unknown as Promise<typeof User>,
+	]);
 
 	// TODO: Could use proper escaping
 	const escapedComment = validatedComment.replaceAll('<', '&lt;').replaceAll('>', '&gt;');
 	await sendToTelegram(`<b>${user.username}</b> left a comment on <b>${thought.title}</b>:\n\n${escapedComment}`);
 
-	return comment;
+	return {...comment, user: loadedUser };
 }
 
 /**

@@ -1,8 +1,7 @@
 import { useCallback } from 'react';
-import { deleteComment, getAuthenticatedUser, loadComments } from './actions';
+import { type CommentWithUser, deleteComment, getAuthenticatedUser, loadComments } from './actions';
 import { Button } from './button';
 import styles from './styles.module.css';
-import { Comment } from '../../../schema';
 
 /**
  * List all comments for a given post and includes
@@ -35,19 +34,19 @@ export function CommentList({
 			<div>
 				{comments.map(list => {
 					return list.comments.map(defaultComment => {
-						const comment = defaultComment as typeof Comment & { ronin: { createdAt: Date } };
+						const comment = defaultComment as CommentWithUser & { ronin: { createdAt: Date } };
 						const date = new Date(comment.ronin.createdAt).toISOString();
 
 						return (
 							<div key={comment.id} className={styles.comment}>
 								<div className={styles.commentHead}>
 									<div>
-										<span className={styles.commentAuthor}>{comment.username}</span>
+										<span className={styles.commentAuthor}>{comment.user.username}</span>
 										&nbsp;wrote on&nbsp;
 										<span title={date}>{date.split('T')[0]}</span>
 									</div>
 									<div>
-										{user?.id === comment.user ? (
+										{user?.id === comment.user.id ? (
 											<Button onClick={() => onDeleteComment(comment.id)}>Delete.</Button>
 										) : null}
 									</div>

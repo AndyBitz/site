@@ -4,7 +4,7 @@ import { useCallback, useState } from 'react';
 import { Button } from './button';
 import styles from './styles.module.css';
 import { CommentList } from './comment-list';
-import { loadComments, getAuthenticatedUser } from './actions';
+import { loadComments, getAuthenticatedUser, type CommentWithUser } from './actions';
 import { CommentInput } from './comment-input';
 import type { Comment } from '../../../schema';
 
@@ -19,8 +19,8 @@ export function Comments({ postId }: { postId: string }) {
 	const moreAfter = comments[comments.length - 1]?.moreAfter;
 	const hasMore = Boolean(moreAfter);
 
-	const unshiftComment = useCallback(async (defaultComment: typeof Comment) => {
-		const comment = defaultComment as typeof Comment & { ronin: { createdAt: Date } };
+	const unshiftComment = useCallback(async (defaultComment: CommentWithUser) => {
+		const comment = defaultComment as CommentWithUser & { ronin: { createdAt: Date } };
 
 		setComments((prev) => {
 			const next = [
