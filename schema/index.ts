@@ -11,6 +11,11 @@ export const Thought = model({
     slug: string(),
     text: json(),
   },
+
+  identifiers: {
+    name: 'title',
+    slug: 'slug'
+  }
 });
 
 export const User = model({
@@ -21,6 +26,10 @@ export const User = model({
     publicUserId: string(),
     username: string(),
   },
+
+  identifiers: {
+    name: 'username',
+  }
 });
 
 export const Comment = model({
@@ -34,6 +43,5 @@ export const Comment = model({
     user: link({
       target: "user",
     }),
-    username: string(),
   },
 });
