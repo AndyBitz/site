@@ -9,7 +9,7 @@ import { stringToBuffer } from './utils';
 import { unwrapEC2Sig } from './unwrap-ec2-signature';
 import { SignJWT, jwtVerify } from 'jose';
 import crypto from 'node:crypto';
-import type { Comment, User } from '../../../schema';
+import type { Comment, Thought, User } from '../../../schema';
 
 const JWT_COOKIE_NAME = 'andybitz_io_jwt';
 const JWT_SECRET = new TextEncoder().encode(process.env.JWT_SECRET!);
@@ -85,7 +85,7 @@ export async function createComment(postId: string, text: string): Promise<Comme
 
 	await checkRateLimit();
 
-	const thought = await get.thought.with.id(postId);
+	const thought = await get.thought.with.id<typeof Thought | null>(postId);
 	if (!thought) throw new Error('No need to comment on a thought that does not concern me.');
 
 	const [comment, loadedUser] = await batch(() => [
@@ -94,7 +94,7 @@ export async function createComment(postId: string, text: string): Promise<Comme
 			user: user.id,
 			text: validatedComment,
 		}) as unknown as Promise<typeof Comment>,
-		get.user.with.id(user.id) as unknown as Promise<typeof User>,
+		get.user.with.id<typeof User>(user.id),
 	]);
 
 	// TODO: Could use proper escaping
@@ -111,10 +111,10 @@ export async function deleteComment(commentId: string) {
 	const user = await getAuthenticatedUser();
 	if (!user) throw new Error('Not authorized to delete comment.');
 
-	const comment = await get.comment.with.id(commentId) as typeof Comment | null;
+	const comment = await get.comment.with.id<typeof Comment | null>(commentId);
 	if (comment?.user !== user.id) throw new Error('Not authorized to delete comment.');
 
-	await remove.comment.with.id(commentId);
+	await remove.comment.with.id<typeof Comment | null>(commentId);
 }
 
 /**
@@ -153,7 +153,7 @@ export async function getUserAndChallenge(username: string) {
 
 	validateUsername(username);
 
-	const user = await get.user.with.username(username) as typeof User | null;
+	const user = await get.user.with.username<typeof User | null>(username);
 
 	const publicUserId = user
 		? user.publicUserId
@@ -251,7 +251,7 @@ export async function verifyUser(username: string, signedData: SignedData) {
 
 	await checkRateLimit();
 
-	const user = await get.user.with.username(username) as typeof User | null;
+	const user = await get.user.with.username<typeof User | null>(username);
 
 	if (!user) return null;
 
