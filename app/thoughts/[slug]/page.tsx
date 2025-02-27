@@ -34,8 +34,7 @@ export async function generateMetadata(
 ): Promise<Metadata> {
 	const resolvedParent = await parent
 
-	// @ts-expect-error RONIN queries will soon be inferred from models again.
-	const thought = await get.thought.with.slug(params.slug) as (typeof Thought) | null;
+	const thought = await get.thought.with.slug<typeof Thought | null>(params.slug);
 
 	if (!thought) notFound();
 
@@ -45,8 +44,7 @@ export async function generateMetadata(
 }
 
 export default async function Page({ params }: { params: { slug: string; }}) {
-	// @ts-expect-error RONIN queries will soon be inferred from models again.
-	const thought = await get.thought.with.slug(params.slug) as (typeof Thought) | null;
+	const thought = await get.thought.with.slug<typeof Thought | null>(params.slug);
 
 	if (!thought) notFound();
 
