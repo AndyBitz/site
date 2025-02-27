@@ -85,7 +85,6 @@ export async function createComment(postId: string, text: string): Promise<Comme
 
 	await checkRateLimit();
 
-	// @ts-expect-error RONIN queries will soon be inferred from models again.
 	const thought = await get.thought.with.id(postId);
 	if (!thought) throw new Error('No need to comment on a thought that does not concern me.');
 
@@ -95,7 +94,6 @@ export async function createComment(postId: string, text: string): Promise<Comme
 			user: user.id,
 			text: validatedComment,
 		}) as unknown as Promise<typeof Comment>,
-		// @ts-expect-error RONIN queries will soon be inferred from models again.
 		get.user.with.id(user.id) as unknown as Promise<typeof User>,
 	]);
 
@@ -113,11 +111,9 @@ export async function deleteComment(commentId: string) {
 	const user = await getAuthenticatedUser();
 	if (!user) throw new Error('Not authorized to delete comment.');
 
-	// @ts-expect-error RONIN queries will soon be inferred from models again.
 	const comment = await get.comment.with.id(commentId) as typeof Comment | null;
 	if (comment?.user !== user.id) throw new Error('Not authorized to delete comment.');
 
-	// @ts-expect-error RONIN queries will soon be inferred from models again.
 	await remove.comment.with.id(commentId);
 }
 
@@ -157,7 +153,6 @@ export async function getUserAndChallenge(username: string) {
 
 	validateUsername(username);
 
-	// @ts-expect-error RONIN queries will soon be inferred from models again.
 	const user = await get.user.with.username(username) as typeof User | null;
 
 	const publicUserId = user
@@ -256,7 +251,6 @@ export async function verifyUser(username: string, signedData: SignedData) {
 
 	await checkRateLimit();
 
-	// @ts-expect-error RONIN queries will soon be inferred from models again.
 	const user = await get.user.with.username(username) as typeof User | null;
 
 	if (!user) return null;
