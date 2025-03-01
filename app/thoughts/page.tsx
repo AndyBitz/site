@@ -28,7 +28,7 @@ export default async function Thoughts() {
 						}
 
 						return (
-							<li>
+							<li key={thought.id}>
 								<h3>
 									{thought.externalLink ? (
 										<Link href={thought.externalLink} target="_blank">

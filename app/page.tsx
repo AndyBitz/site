@@ -37,13 +37,13 @@ function About() {
 		<div className={styles.about}>
 			<p>
 				<span>
-					I am a programmer and will program anything possible.
+					I'm a programmer. Sometimes I write.
 				</span>
 			</p>
 
 			<p>
 				<span>
-					I enjoy late night walks through empty streets, pain,
+					I enjoy night walks through empty streets, pain,
 					and video games—especially Dark Souls and Metal Gear.
 				</span>
 			</p>
