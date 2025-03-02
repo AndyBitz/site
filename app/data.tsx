@@ -1,3 +1,5 @@
+import type { ReactNode } from 'react';
+
 function Container({ letter }: { letter: string; }) {
 	return (
 		<span style={{ fontSize: 24, lineHeight: 1, width: 24, height: 24, display: 'inline-block' }}>
@@ -9,7 +11,7 @@ function Container({ letter }: { letter: string; }) {
 export const links: {
 	title: string;
 	href: string;
-	icon: () => JSX.Element;
+	icon: () => ReactNode;
 }[] = [
 	{
 		title: 'Thoughts',

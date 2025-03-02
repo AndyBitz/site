@@ -169,9 +169,9 @@ function createAnimation(ctx: CanvasRenderingContext2D, options: {
 
 	// Split the color channels
 	for (let i = 0; i < data.length; i += 4) {
-		redData.data[i] = 255 || data[i];  // Red channel
-		greenData.data[i + 1] = 255 || data[i + 1];  // Green channel
-		blueData.data[i + 2] = 255 || data[i + 2];  // Blue channel
+		redData.data[i] = 255 | data[i];  // Red channel
+		greenData.data[i + 1] = 255 | data[i + 1];  // Green channel
+		blueData.data[i + 2] = 255 | data[i + 2];  // Blue channel
 		redData.data[i + 3] = greenData.data[i + 3] = blueData.data[i + 3] = data[i + 3];
 	}
 

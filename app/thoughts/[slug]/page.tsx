@@ -8,8 +8,8 @@ import { Comments } from '../../components/comments';
 import type { Thought } from '../../../schema';
 
 type Props = {
-	params: { slug: string; };
-	searchParams: { [key: string]: string | string[] | undefined };
+	params: Promise<{ slug: string; }>;
+	searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }
 
 export const revalidate = 60; // Revalidate every minute
@@ -17,7 +17,7 @@ export const revalidate = 60; // Revalidate every minute
 export async function generateStaticParams() {
 	const thoughts = await get.thoughts.orderedBy.descending(['postedAt']) as Array<typeof Thought>;
 
-	const params: Props['params'][] = [];
+	const params: { slug: string; }[] = [];
 
 	for (const thought of thoughts) {
 		if (thought.slug) {
@@ -29,10 +29,11 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata(
-	{ params }: Props,
+	props: Props,
 	parent: ResolvingMetadata,
 ): Promise<Metadata> {
 	const resolvedParent = await parent
+	const params = await props.params;
 
 	const thought = await get.thought.with.slug<typeof Thought | null>(params.slug);
 
@@ -43,7 +44,8 @@ export async function generateMetadata(
 	};
 }
 
-export default async function Page({ params }: { params: { slug: string; }}) {
+export default async function Page(props: Props) {
+	const params = await props.params;
 	const thought = await get.thought.with.slug<typeof Thought | null>(params.slug);
 
 	if (!thought) notFound();

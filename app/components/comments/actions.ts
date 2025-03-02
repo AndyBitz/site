@@ -121,14 +121,14 @@ export async function deleteComment(commentId: string) {
  * Removes the cookie to let the user sign out.
  */
 export async function signOut() {
-	cookies().delete(JWT_COOKIE_NAME);
+	(await cookies()).delete(JWT_COOKIE_NAME);
 }
 
 /**
  * Gets the currently authenticated user from the JWT cookie.
  */
 export async function getAuthenticatedUser() {
-	const jwtCookie = cookies().get(JWT_COOKIE_NAME)?.value;
+	const jwtCookie = (await cookies()).get(JWT_COOKIE_NAME)?.value;
 	if (!jwtCookie) return null;
 
 	const verify = await jwtVerify(jwtCookie, JWT_SECRET).catch((error) => {
@@ -311,7 +311,7 @@ async function createJWTCookie(user: typeof User) {
 		.setProtectedHeader({ alg: JWT_ALG })
 		.sign(JWT_SECRET);
 
-	cookies().set(JWT_COOKIE_NAME, jwt);
+	(await cookies()).set(JWT_COOKIE_NAME, jwt);
 }
 
 /**

@@ -9,6 +9,7 @@ import { ECDSASigValue } from '@peculiar/asn1-ecc';
  * From https://github.com/MasterKale/SimpleWebAuthn/blob/master/packages/server/src/helpers/iso/isoCrypto/unwrapEC2Signature.ts
  */
 export async function unwrapEC2Sig(signature: ArrayBufferLike) {
+	// @ts-expect-error
 	const parsedSignature = AsnParser.parse(signature, ECDSASigValue);
 	let rBytes = new Uint8Array(parsedSignature.r);
 	let sBytes = new Uint8Array(parsedSignature.s);
