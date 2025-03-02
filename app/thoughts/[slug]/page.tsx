@@ -1,6 +1,5 @@
-import { RichText } from 'react-ronin';
 import { get } from 'ronin';
-import type { RichTextContent } from 'react-ronin/types';
+import { RichText } from '@ronin/react';
 import { notFound } from 'next/navigation';
 import type { Metadata, ResolvingMetadata } from 'next';
 import { Glitch } from '../../components/glitch';
@@ -58,7 +57,7 @@ export default async function Page(props: Props) {
 				</Glitch>
 			</h1>
 			<div style={{ whiteSpace: 'pre-wrap' }}>
-				<RichText data={thought.text as unknown as RichTextContent} />
+				<RichText data={thought.text} />
 			</div>
 			<Comments postId={thought.id} />
 		</>
