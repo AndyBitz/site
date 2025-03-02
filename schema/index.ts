@@ -9,7 +9,9 @@ export const Thought = model({
     hidden: boolean(),
     postedAt: date(),
     slug: string(),
-    text: json(),
+    text: json({
+      displayAs: 'rich-text'
+    }),
   },
 
   identifiers: {
