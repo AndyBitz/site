@@ -5,13 +5,13 @@ export const Thought = model({
 
   fields: {
     title: string(),
-    externalLink: string(),
-    hidden: boolean(),
-    postedAt: date(),
     slug: string(),
     text: json({
       displayAs: 'rich-text'
     }),
+    hidden: boolean(),
+    postedAt: date(),
+    externalLink: string(),
   },
 
   identifiers: {
