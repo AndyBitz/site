@@ -7,7 +7,7 @@ import type { Thought } from '../../schema';
 export const revalidate = 60;
 
 export default async function Thoughts() {
-	const thoughts = await get.thoughts.orderedBy.descending(['postedAt']) as Array<typeof Thought>;
+	const thoughts = await get.thoughts.orderedBy.descending(['postedAt']);
 
 	return (
 		<>

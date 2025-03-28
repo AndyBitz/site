@@ -4,7 +4,8 @@
   "scripts": {
     "dev": "next",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "generate": "ronin types"
   },
   "repository": "AndyBitz/site",
   "author": "AndyBitz",
@@ -20,7 +21,7 @@
     "next": "15.2.0",
     "react": "19.0.0",
     "react-dom": "19.0.0",
-    "ronin": "6.2.26",
+    "ronin": "^6.4.3",
     "zod": "3.24.2"
   },
   "devDependencies": {

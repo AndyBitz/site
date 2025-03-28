@@ -11,5 +11,5 @@ node_modules
 .env*.local
 
 # database
-.ronin
+.ronin/config.json
 .protocols

@@ -4,12 +4,19 @@ import { z } from 'zod';
 import { kv } from '@vercel/kv';
 import { Ratelimit } from '@upstash/ratelimit';
 import { cookies, headers } from 'next/headers';
-import { get, add, remove, batch } from 'ronin';
+import {
+	get,
+	add,
+	remove,
+	batch,
+	type Comment,
+	type Comments,
+	type User,
+} from "ronin";
 import { stringToBuffer } from './utils';
 import { unwrapEC2Sig } from './unwrap-ec2-signature';
 import { SignJWT, jwtVerify } from 'jose';
 import crypto from 'node:crypto';
-import type { Comment, Thought, User } from '../../../schema';
 
 const JWT_COOKIE_NAME = 'andybitz_io_jwt';
 const JWT_SECRET = new TextEncoder().encode(process.env.JWT_SECRET!);
@@ -38,7 +45,7 @@ async function checkRateLimit() {
 	}));
 }
 
-export type CommentWithUser = Omit<typeof Comment, 'user'> & { user: typeof User };
+export type CommentWithUser = Comment<['user']>;
 
 /**
  * Loads a set of comments for one post. Optionally accepts a timestamp to
@@ -51,7 +58,7 @@ export async function loadComments(postId: string, after?: string): Promise<{
 }> {
 	headers();
 
-	const comments = await get.comments({
+	const comments = await get.comments<Comments<['user']>>({
 		with: {
 			thought: postId
 		},
@@ -61,7 +68,7 @@ export async function loadComments(postId: string, after?: string): Promise<{
 		using: ['user'],
 		limitedTo: 1,
 		after
-	}) as Array<CommentWithUser> & { moreAfter?: string; moreBefore?: string; };
+	});
 
 	return {
 		comments: comments,
@@ -85,16 +92,16 @@ export async function createComment(postId: string, text: string): Promise<Comme
 
 	await checkRateLimit();
 
-	const thought = await get.thought.with.id<typeof Thought | null>(postId);
+	const thought = await get.thought.with.id(postId);
 	if (!thought) throw new Error('No need to comment on a thought that does not concern me.');
 
 	const [comment, loadedUser] = await batch(() => [
-		add.comment.with({
+		add.comment.with<Comment>({
 			thought: thought.id,
 			user: user.id,
 			text: validatedComment,
-		}) as unknown as Promise<typeof Comment>,
-		get.user.with.id<typeof User>(user.id),
+		}),
+		get.user.with.id<User>(user.id),
 	]);
 
 	// TODO: Could use proper escaping
@@ -111,10 +118,10 @@ export async function deleteComment(commentId: string) {
 	const user = await getAuthenticatedUser();
 	if (!user) throw new Error('Not authorized to delete comment.');
 
-	const comment = await get.comment.with.id<typeof Comment | null>(commentId);
+	const comment = await get.comment.with.id(commentId);
 	if (comment?.user !== user.id) throw new Error('Not authorized to delete comment.');
 
-	await remove.comment.with.id<typeof Comment | null>(commentId);
+	await remove.comment.with.id(commentId);
 }
 
 /**
@@ -153,7 +160,7 @@ export async function getUserAndChallenge(username: string) {
 
 	validateUsername(username);
 
-	const user = await get.user.with.username<typeof User | null>(username);
+	const user = await get.user.with.username(username);
 
 	const publicUserId = user
 		? user.publicUserId
@@ -221,11 +228,11 @@ export async function createUser(
 
 	await checkRateLimit();
 
-	const user = await add.user.with({
+	const user = await add.user.with<User>({
 		publicUserId,
 		username,
 		publicKey: publicKey,
-	}) as typeof User;
+	});
 
 	await createJWTCookie(user);
 }
@@ -251,7 +258,7 @@ export async function verifyUser(username: string, signedData: SignedData) {
 
 	await checkRateLimit();
 
-	const user = await get.user.with.username<typeof User | null>(username);
+	const user = await get.user.with.username(username);
 
 	if (!user) return null;
 
@@ -299,7 +306,7 @@ export async function verifyUser(username: string, signedData: SignedData) {
 /**
  * Creates and sets the JWT cookie based on a user.
  */
-async function createJWTCookie(user: typeof User) {
+async function createJWTCookie(user: User) {
 	const payload = {
 		sub: user.id,
 		name: user.username,

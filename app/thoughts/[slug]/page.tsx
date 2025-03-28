@@ -14,7 +14,7 @@ type Props = {
 export const revalidate = 60; // Revalidate every minute
 
 export async function generateStaticParams() {
-	const thoughts = await get.thoughts.orderedBy.descending(['postedAt']) as Array<typeof Thought>;
+	const thoughts = await get.thoughts.orderedBy.descending(['postedAt']);
 
 	const params: { slug: string; }[] = [];
 

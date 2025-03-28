@@ -33,8 +33,7 @@ export function CommentList({
 		<div className={styles.commentList}>
 			<div>
 				{comments.map(list => {
-					return list.comments.map(defaultComment => {
-						const comment = defaultComment as CommentWithUser & { ronin: { createdAt: Date } };
+					return list.comments.map(comment => {
 						const date = new Date(comment.ronin.createdAt).toISOString();
 
 						return (
