@@ -1,24 +1,17 @@
-import { get } from 'ronin';
-import { RichText } from '@ronin/react';
 import { notFound } from 'next/navigation';
 import type { Metadata, ResolvingMetadata } from 'next';
 import { Glitch } from '../../components/glitch';
-import { Comments } from '../../components/comments';
-import type { Thought } from '../../../schema';
+import { thoughtList } from '../../thought-list';
 
 type Props = {
 	params: Promise<{ slug: string; }>;
 	searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }
 
-export const revalidate = 60; // Revalidate every minute
-
 export async function generateStaticParams() {
-	const thoughts = await get.thoughts.orderedBy.descending(['postedAt']);
-
 	const params: { slug: string; }[] = [];
 
-	for (const thought of thoughts) {
+	for (const thought of thoughtList) {
 		if (thought.slug) {
 			params.push({ slug: thought.slug });
 		}
@@ -34,8 +27,7 @@ export async function generateMetadata(
 	const resolvedParent = await parent
 	const params = await props.params;
 
-	const thought = await get.thought.with.slug<typeof Thought | null>(params.slug);
-
+	const thought = thoughtList.find(t => t.slug === params.slug);
 	if (!thought) notFound();
 
 	return {
@@ -45,7 +37,7 @@ export async function generateMetadata(
 
 export default async function Page(props: Props) {
 	const params = await props.params;
-	const thought = await get.thought.with.slug<typeof Thought | null>(params.slug);
+	const thought = thoughtList.find(t => t.slug === params.slug);
 
 	if (!thought) notFound();
 
@@ -57,9 +49,13 @@ export default async function Page(props: Props) {
 				</Glitch>
 			</h1>
 			<div style={{ whiteSpace: 'pre-wrap' }}>
-				<RichText data={thought.text} />
+				{thought.text.map((para, index) => {
+					return (
+						<p key={index}>{para}</p>
+					);
+				})}
 			</div>
-			<Comments postId={thought.id} />
 		</>
 	);
 }
+

@@ -1,13 +1,12 @@
-import { get } from 'ronin';
 import { Link } from "../components/link";
 import styles from './page.module.css';
 import { Glitch } from '../components/glitch';
-import type { Thought } from '../../schema';
+import { thoughtList } from '../thought-list';
 
 export const revalidate = 60;
 
 export default async function Thoughts() {
-	const thoughts = await get.thoughts.orderedBy.descending(['postedAt']);
+	// const thoughts = await get.thoughts.orderedBy.descending(['postedAt']);
 
 	return (
 		<>
@@ -18,17 +17,13 @@ export default async function Thoughts() {
 			</h1>
 			<div>
 				<ul className={styles.thoughtsList}>
-					{thoughts.map(thought => {
-						if (thought.hidden) {
-							return;
-						}
-
+					{thoughtList.map(thought => {
 						if (!thought.postedAt && process.env.NODE_ENV !== 'development') {
 							return;
 						}
 
 						return (
-							<li key={thought.id}>
+							<li key={thought.slug}>
 								<h3>
 									{thought.externalLink ? (
 										<Link href={thought.externalLink} target="_blank">
