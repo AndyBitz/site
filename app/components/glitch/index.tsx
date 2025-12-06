@@ -7,8 +7,8 @@ import { Perlin } from './perlin';
 function getCanvasRatio(ctx: CanvasRenderingContext2D) {
 	// Ensure the canvas renders in the correct resolution
 	const devicePixelRatio = window.devicePixelRatio || 1;
-	// @ts-ignore
 	const backingStorePixelRatio: number =
+		// @ts-ignore
 		ctx.webkitBackingStorePixelRatio ||
 		// @ts-ignore
 		ctx.mozBackingStorePixelRatio ||
