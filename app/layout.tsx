@@ -7,7 +7,8 @@ import './layout.css';
 const title = 'hello ^•^/';
 const url = 'https://andybitz.io';
 const image = `${url}/og.png`;
-const description = 'Programming, Design, Art, and all the other things I love.';
+const description =
+	'Programming, Design, Art, and all the other things I love.';
 
 export const metadata: Metadata = {
 	metadataBase: new URL('https://andybitz.io'),
@@ -40,11 +41,7 @@ const roboto = Roboto({
 	subsets: ['latin'],
 });
 
-export default function RootLayout({
-	children,
-}: {
-	children: ReactNode;
-}) {
+export default function RootLayout({ children }: { children: ReactNode }) {
 	return (
 		<html lang="en">
 			<body className={roboto.className}>

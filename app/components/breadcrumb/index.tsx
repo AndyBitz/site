@@ -1,6 +1,6 @@
 'use client';
 
-import { usePathname } from 'next/navigation'
+import { usePathname } from 'next/navigation';
 import { Link } from '../link';
 import styles from './breadcrumb.module.css';
 import { IconCircle } from '../../icons/circle';

@@ -20,11 +20,18 @@ function Intro() {
 		<div className={styles.intro}>
 			<div className={styles.introImage}>
 				<Glitch maxBoxWidthAndHeight={80}>
-					<Image src="/profile.png" alt="profile" width={128} height={128} />
+					<Image
+						src="/profile.png"
+						alt="profile"
+						width={128}
+						height={128}
+					/>
 				</Glitch>
 			</div>
 			<div className={styles.introName}>
-				<h1><Glitch>Andy</Glitch></h1>
+				<h1>
+					<Glitch>Andy</Glitch>
+				</h1>
 				<span className={styles.introLineBlack} />
 				<span className={styles.introLineRed} />
 			</div>
@@ -36,21 +43,23 @@ function About() {
 	return (
 		<div className={styles.about}>
 			<p>
+				<span>I'm a programmer. Sometimes I write.</span>
+			</p>
+
+			<p>
 				<span>
-					I'm a programmer. Sometimes I write.
+					I enjoy night walks through empty streets, pain, and video
+					games—especially Dark Souls and Metal Gear.
 				</span>
 			</p>
 
 			<p>
 				<span>
-					I enjoy night walks through empty streets, pain,
-					and video games—especially Dark Souls and Metal Gear.
-				</span>
-			</p>
-
-			<p>
-				<span>
-					Busy building <Link href="https://vercel.com/" target="_blank">Vercel</Link> since 2019.
+					Busy building{' '}
+					<Link href="https://vercel.com/" target="_blank">
+						Vercel
+					</Link>{' '}
+					since 2019.
 				</span>
 			</p>
 
@@ -100,7 +109,10 @@ function ListItem({
 }) {
 	return (
 		<li className={styles.listItem}>
-			<Link href={href} target={href.startsWith('http') ? "_blank" : undefined}>
+			<Link
+				href={href}
+				target={href.startsWith('http') ? '_blank' : undefined}
+			>
 				<span
 					style={{ animationDelay: `${delay * 200 + 1600}ms` }}
 					className={styles.icon}
@@ -111,9 +123,7 @@ function ListItem({
 					style={{ animationDelay: `${delay * 250 + 1600}ms` }}
 					className={styles.listTitle}
 				>
-					<Glitch>
-						{title}
-					</Glitch>
+					<Glitch>{title}</Glitch>
 				</span>
 			</Link>
 		</li>

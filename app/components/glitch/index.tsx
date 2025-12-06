@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import { ReactNode, useEffect, useMemo, useRef } from 'react';
 import styles from './glitch.module.css';
@@ -8,16 +8,17 @@ function getCanvasRatio(ctx: CanvasRenderingContext2D) {
 	// Ensure the canvas renders in the correct resolution
 	const devicePixelRatio = window.devicePixelRatio || 1;
 	// @ts-ignore
-	const backingStorePixelRatio: number = ctx.webkitBackingStorePixelRatio
+	const backingStorePixelRatio: number =
+		ctx.webkitBackingStorePixelRatio ||
 		// @ts-ignore
-		|| ctx.mozBackingStorePixelRatio
+		ctx.mozBackingStorePixelRatio ||
 		// @ts-ignore
-		|| ctx.msBackingStorePixelRatio
+		ctx.msBackingStorePixelRatio ||
 		// @ts-ignore
-		|| ctx.oBackingStorePixelRatio
+		ctx.oBackingStorePixelRatio ||
 		// @ts-ignore
-		|| ctx.backingStorePixelRatio
-		|| 1;
+		ctx.backingStorePixelRatio ||
+		1;
 
 	return {
 		devicePixelRatio,
@@ -29,8 +30,8 @@ export function Glitch({
 	children,
 	maxBoxWidthAndHeight,
 }: {
-	children: ReactNode,
-	maxBoxWidthAndHeight?: number,
+	children: ReactNode;
+	maxBoxWidthAndHeight?: number;
 }) {
 	const canvasRef = useRef<HTMLCanvasElement | null>(null);
 	const spanRef = useRef<HTMLSpanElement | null>(null);
@@ -48,7 +49,8 @@ export function Glitch({
 			const span = spanRef.current;
 			if (!span) return;
 
-			const { devicePixelRatio, backingStorePixelRatio } = getCanvasRatio(ctx);
+			const { devicePixelRatio, backingStorePixelRatio } =
+				getCanvasRatio(ctx);
 
 			const style = window.getComputedStyle(span);
 			const rect = span.getBoundingClientRect();
@@ -63,8 +65,8 @@ export function Glitch({
 
 			canvas.width = (w + oversize) * pixelRatio;
 			canvas.height = (h + oversize) * pixelRatio;
-			canvas.style.width = (w + oversize) + "px";
-			canvas.style.height = (h + oversize) + "px";
+			canvas.style.width = w + oversize + 'px';
+			canvas.style.height = h + oversize + 'px';
 			canvas.style.transform = `translate(-${oversize / 2}px, -${oversize / 2}px)`;
 			ctx.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
 
@@ -73,7 +75,11 @@ export function Glitch({
 				ctx.clearRect(0, 0, canvas.width, canvas.height);
 				ctx.font = style['font'];
 				ctx.fillStyle = '#333';
-				ctx.fillText(children, 0 + oversize / 2, rect.height - 8 + oversize / 2);
+				ctx.fillText(
+					children,
+					0 + oversize / 2,
+					rect.height - 8 + oversize / 2,
+				);
 
 				// Hide the original text
 				span.style.color = 'rgba(0, 0, 0, 0)';
@@ -81,13 +87,19 @@ export function Glitch({
 				const child = span.children[0];
 				if (child.tagName === 'IMG') {
 					ctx.clearRect(0, 0, canvas.width, canvas.height);
-					ctx.drawImage(child as HTMLImageElement, 0 + oversize / 2, 0 + oversize / 2, w, h);
+					ctx.drawImage(
+						child as HTMLImageElement,
+						0 + oversize / 2,
+						0 + oversize / 2,
+						w,
+						h,
+					);
 				}
 				span.style.opacity = '0';
 			}
 
 			const { start, stop } = createAnimation(ctx, {
-				maxBoxWidthAndHeight
+				maxBoxWidthAndHeight,
 			});
 
 			start();
@@ -97,13 +109,9 @@ export function Glitch({
 
 		return () => {
 			clearTimeout(timeout);
-			callbacks.forEach(c => c());
+			callbacks.forEach((c) => c());
 		};
-
-	}, [
-		children,
-		maxBoxWidthAndHeight,
-	]);
+	}, [children, maxBoxWidthAndHeight]);
 
 	const spanStyles = useMemo(() => {
 		if (typeof children !== 'string') {
@@ -126,13 +134,21 @@ export function Glitch({
 	);
 }
 
-function createAnimation(ctx: CanvasRenderingContext2D, options: {
-	maxBoxWidthAndHeight?: number,
-}) {
+function createAnimation(
+	ctx: CanvasRenderingContext2D,
+	options: {
+		maxBoxWidthAndHeight?: number;
+	},
+) {
 	let stopped = false;
 	let start = 0;
 
-	const original = ctx.getImageData(0, 0, ctx.canvas.width, ctx.canvas.height);
+	const original = ctx.getImageData(
+		0,
+		0,
+		ctx.canvas.width,
+		ctx.canvas.height,
+	);
 	const perlin = new Perlin(1337);
 
 	const { devicePixelRatio } = getCanvasRatio(ctx);
@@ -146,8 +162,14 @@ function createAnimation(ctx: CanvasRenderingContext2D, options: {
 	canvasRed.width = canvasGreen.width = canvasBlue.width = canvas.width;
 	canvasRed.height = canvasGreen.height = canvasBlue.height = canvas.height;
 
-	canvasRed.style.width = canvasGreen.style.width = canvasBlue.style.width = canvas.style.width;
-	canvasRed.style.height = canvasGreen.style.height = canvasBlue.style.height = canvas.style.height;
+	canvasRed.style.width =
+		canvasGreen.style.width =
+		canvasBlue.style.width =
+			canvas.style.width;
+	canvasRed.style.height =
+		canvasGreen.style.height =
+		canvasBlue.style.height =
+			canvas.style.height;
 
 	const ctxRed = canvasRed.getContext('2d');
 	const ctxGreen = canvasGreen.getContext('2d');
@@ -159,7 +181,6 @@ function createAnimation(ctx: CanvasRenderingContext2D, options: {
 	ctxGreen.setTransform(transform);
 	ctxBlue.setTransform(transform);
 
-
 	const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
 	let data = imageData.data;
 
@@ -169,10 +190,13 @@ function createAnimation(ctx: CanvasRenderingContext2D, options: {
 
 	// Split the color channels
 	for (let i = 0; i < data.length; i += 4) {
-		redData.data[i] = 255 | data[i];  // Red channel
-		greenData.data[i + 1] = 255 | data[i + 1];  // Green channel
-		blueData.data[i + 2] = 255 | data[i + 2];  // Blue channel
-		redData.data[i + 3] = greenData.data[i + 3] = blueData.data[i + 3] = data[i + 3];
+		redData.data[i] = 255 | data[i]; // Red channel
+		greenData.data[i + 1] = 255 | data[i + 1]; // Green channel
+		blueData.data[i + 2] = 255 | data[i + 2]; // Blue channel
+		redData.data[i + 3] =
+			greenData.data[i + 3] =
+			blueData.data[i + 3] =
+				data[i + 3];
 	}
 
 	let lastChromaticAberration = 0;
@@ -210,29 +234,47 @@ function createAnimation(ctx: CanvasRenderingContext2D, options: {
 			if (chromaticState === 'chromatic') {
 				lastChromaticAberration = time;
 
-  				ctx.clearRect(0, 0, canvas.width, canvas.height);
+				ctx.clearRect(0, 0, canvas.width, canvas.height);
 
 				ctxRed.putImageData(redData, 0, 0);
 				ctxGreen.putImageData(greenData, 0, 0);
 				ctxBlue.putImageData(blueData, 0, 0);
 
-  				ctx.globalCompositeOperation = 'lighter';
+				ctx.globalCompositeOperation = 'lighter';
 
 				const invert = perlin.noise(1 / 100, elapsed) > 0 ? -1 : 1;
-				const x = (2 * invert) + perlin.noise(2 / 100, elapsed) * 10;
-				const y = (-2 * invert) + perlin.noise(-2 / 100, elapsed) * 10;
+				const x = 2 * invert + perlin.noise(2 / 100, elapsed) * 10;
+				const y = -2 * invert + perlin.noise(-2 / 100, elapsed) * 10;
 
-  				ctx.drawImage(canvasRed, x, y, canvas.width / devicePixelRatio, canvas.height / devicePixelRatio);
-  				ctx.drawImage(canvasGreen, 0, 0, canvas.width / devicePixelRatio, canvas.height / devicePixelRatio);
-  				ctx.drawImage(canvasBlue, -x, -y, canvas.width / devicePixelRatio, canvas.height / devicePixelRatio);
+				ctx.drawImage(
+					canvasRed,
+					x,
+					y,
+					canvas.width / devicePixelRatio,
+					canvas.height / devicePixelRatio,
+				);
+				ctx.drawImage(
+					canvasGreen,
+					0,
+					0,
+					canvas.width / devicePixelRatio,
+					canvas.height / devicePixelRatio,
+				);
+				ctx.drawImage(
+					canvasBlue,
+					-x,
+					-y,
+					canvas.width / devicePixelRatio,
+					canvas.height / devicePixelRatio,
+				);
 
-				chromaticState = Math.random() > .5 ? 'chromatic' : 'clear';
+				chromaticState = Math.random() > 0.5 ? 'chromatic' : 'clear';
 				chromaticChange = Math.floor(Math.random() * 200);
 			} else if (chromaticState === 'clear') {
-  				ctx.clearRect(0, 0, canvas.width, canvas.height);
+				ctx.clearRect(0, 0, canvas.width, canvas.height);
 				ctx.putImageData(original, 0, 0);
 
-				chromaticState = Math.random() > .8 ? 'chromatic' : 'clear';
+				chromaticState = Math.random() > 0.8 ? 'chromatic' : 'clear';
 				chromaticChange = Math.floor(Math.random() * 1000);
 			}
 		}
@@ -254,17 +296,45 @@ function createAnimation(ctx: CanvasRenderingContext2D, options: {
 					const cutout = {
 						x: x + perlin.noise(x / 100, y / 100) * 10,
 						y: y + perlin.noise(y / 100, x / 100) * 10,
-						width: normalize(perlin.noise(y / 100, x / 100)) * maxBoxWidth,
-						height: normalize(perlin.noise(x / 100, y / 100)) * maxBoxHeight,
+						width:
+							normalize(perlin.noise(y / 100, x / 100)) *
+							maxBoxWidth,
+						height:
+							normalize(perlin.noise(x / 100, y / 100)) *
+							maxBoxHeight,
 					};
 
 					const target = {
-						x: Math.floor(cutout.x + perlin.noise((cutout.x + 50) / 100, (cutout.y + 50) / 100) * 10),
-						y: Math.floor(cutout.y + perlin.noise((cutout.y + 50) / 100, (cutout.x + 50) / 100) * 10),
+						x: Math.floor(
+							cutout.x +
+								perlin.noise(
+									(cutout.x + 50) / 100,
+									(cutout.y + 50) / 100,
+								) *
+									10,
+						),
+						y: Math.floor(
+							cutout.y +
+								perlin.noise(
+									(cutout.y + 50) / 100,
+									(cutout.x + 50) / 100,
+								) *
+									10,
+						),
 					};
 
-					const imageData = ctx.getImageData(cutout.x, cutout.y, cutout.width, cutout.height);
-					ctx.clearRect(cutout.x, cutout.y, cutout.width, cutout.height);
+					const imageData = ctx.getImageData(
+						cutout.x,
+						cutout.y,
+						cutout.width,
+						cutout.height,
+					);
+					ctx.clearRect(
+						cutout.x,
+						cutout.y,
+						cutout.width,
+						cutout.height,
+					);
 					ctx.putImageData(imageData, target.x, target.y);
 				}
 
@@ -279,7 +349,7 @@ function createAnimation(ctx: CanvasRenderingContext2D, options: {
 
 		// Animation must run for at least 3s before
 		// going back into a no-op state.
-		if (time - opSince > 3000 && Math.random() > .2) {
+		if (time - opSince > 3000 && Math.random() > 0.2) {
 			noopState = true;
 			noopSince = time;
 			noopFor = Math.floor(Math.random() * 8_000);

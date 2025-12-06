@@ -7,9 +7,13 @@ export function Link({ children, ...rest }: HTMLProps<HTMLAnchorElement>) {
 		const { href, ref: _ref, ...props } = rest;
 
 		return (
-			<NextLink href={{
-				pathname: href,
-			}} {...props} className={styles.link}>
+			<NextLink
+				href={{
+					pathname: href,
+				}}
+				{...props}
+				className={styles.link}
+			>
 				{children}
 			</NextLink>
 		);

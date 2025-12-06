@@ -30,7 +30,6 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    ".ronin/*.d.ts",
     ".next/dev/types/**/*.ts"
   ],
   "exclude": [

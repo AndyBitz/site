@@ -1,4 +1,3 @@
-
 export class Perlin {
 	private seed: number;
 	private permutation: Uint8Array;
@@ -20,7 +19,7 @@ export class Perlin {
 
 	seededRandom(seed: number) {
 		let x = Math.sin(seed) * 10000;
-		return () => (x - Math.floor(x));
+		return () => x - Math.floor(x);
 	}
 
 	noise(x: number, y: number) {

@@ -15,7 +15,7 @@
 }
 
 .breadcrumb li::after {
-	content: '/';
+	content: "/";
 	display: inline-block;
 	margin-left: 8px;
 }

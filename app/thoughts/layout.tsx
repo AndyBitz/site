@@ -4,8 +4,8 @@ import { Breadcrumb } from '../components/breadcrumb';
 import './layout.css';
 
 type Props = {
-	params: {}
-}
+	params: {};
+};
 
 export async function generateMetadata(
 	_props: Props,
@@ -18,7 +18,7 @@ export async function generateMetadata(
 	};
 }
 
-export default function Layout({ children }: { children: ReactNode; }) {
+export default function Layout({ children }: { children: ReactNode }) {
 	return (
 		<main>
 			<header>
