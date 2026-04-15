@@ -43,7 +43,7 @@ function About() {
 	return (
 		<div className={styles.about}>
 			<p>
-				<span>I'm a programmer. Sometimes I write.</span>
+				<span>I like computers. Sometimes I write.</span>
 			</p>
 
 			<p>
